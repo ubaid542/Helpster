@@ -16,6 +16,7 @@ Rails.application.routes.draw do
 
 get "/location_form", to: "service_providers#location_form", as: :location_form
 
+patch "/location", to: "service_providers#update_location", as: "update_location"
 
 
 root to: 'home#index'

@@ -41,10 +41,30 @@ class ServiceProvidersController < ApplicationController
         end
     end
 
+    def update_location
+        @resource = current_user
+        
+        if @resource.update(location_params)
+            redirect_to root_path, notice: "Location updated successfully!"
+        else
+            @provinces = ["Punjab", "Sindh", "Balochistan", "KPK"]
+            @selected_province = params[:user][:province]
+            @cities = cities_for(@selected_province)
+            
+            render partial: "service_providers/service_provider_location_form"
+        end
+    end
+
+
+    
     private
 
     def professional_params
         params.require(:user).permit(:category, :experience_years, :short_info)
+    end
+
+    def location_params
+        params.require(:user).permit(:province, :city, :address)
     end
     
     def cities_for(province)

@@ -1,4 +1,4 @@
-<%= turbo_frame_tag "location_form_frame" do %>
+
 
 <%= form_with url: location_form_path, data: {turbo_stream: true}, method: :get, local: false do |form| %>
   <div class="space-y-5 my-10 px-6 pt-6 pb-2 shadow-xl bg-white rounded-lg border-2 border-blue-500 max-w-md mx-auto">
@@ -11,13 +11,13 @@
       <% end %>
 
       <%= form.select :province, 
-            options_for_select(@provinces, @selected_province), 
-            {}, 
-            {
-              class: "mt-1 block w-full px-2 py-2 h-11 rounded-md border-gray-300 shadow-md focus:bg-blue-100 focus:shadow-xl focus:outline-none ring-1 focus:ring-2 focus:border-blue-500 focus:ring-blue-500 sm:text-md",
-              id: "province_select",
-              onchange: "this.form.requestSubmit()"
-            } %>
+      options_for_select([["Select Province", ""]] + @provinces.map { |p| [p, p] }, @selected_province), 
+      {}, 
+      {
+        class: "mt-1 block w-full px-2 py-2 h-11 rounded-md border-gray-300 shadow-md focus:bg-blue-100 focus:shadow-xl focus:outline-none ring-1 focus:ring-2 focus:border-blue-500 focus:ring-blue-500 sm:text-md",
+        id: "province_select",
+        onchange: "this.form.requestSubmit()"
+      } %>
     </div>
 
     <!-- City -->
@@ -36,7 +36,13 @@
           placeholder: "Street No. / Area / Nearby Landmark...",
           class: "mt-1 block w-full px-2 py-2 rounded-md border-gray-300 shadow-md focus:bg-blue-100 focus:shadow-xl focus:outline-none ring-1 focus:ring-2 focus:border-blue-500 focus:ring-blue-500 sm:text-md" %>
     </div>
+
+    <!-- Submit Button -->
+    <div class="pt-4">
+      <%= form.submit "Save Location", 
+          class: "w-full bg-indigo-600 hover:bg-indigo-700 text-white font-semibold py-3 px-4 rounded-md shadow-md focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 transition duration-200 ease-in-out transform hover:scale-105" %>
+    </div>
+
   </div>
 <% end %>
 
-<% end %>

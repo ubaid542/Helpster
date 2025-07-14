@@ -1,0 +1,12 @@
+<div class="min-h-screen bg-gray-50 py-12 px-4 sm:px-6 lg:px-8">
+  <div class="max-w-2xl mx-auto">
+    <div class="text-center mb-8">
+      <h1 class="text-4xl font-bold text-gray-900">Location Form</h1>
+      <p class="mt-2 text-lg text-gray-600">Please provide your location details</p>
+    </div>
+    
+    <%= turbo_frame_tag "location_form_frame" do %>
+      <%= render "service_providers/service_provider_location_form" %>
+    <% end %>
+  </div>
+</div>

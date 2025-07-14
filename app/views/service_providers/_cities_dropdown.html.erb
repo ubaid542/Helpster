@@ -1,0 +1,18 @@
+<% if cities.any? %>
+  <div>
+    <label for="city_select">City</label>
+    <select name="city" id="city_select">
+      <option value="">Select City</option>
+      <% cities.each do |city| %>
+        <option value="<%= city %>"><%= city %></option>
+      <% end %>
+    </select>
+  </div>
+<% else %>
+  <div>
+    <label for="city_select">City</label>
+    <select name="city" id="city_select" disabled>
+      <option>No cities available</option>
+    </select>
+  </div>
+<% end %>

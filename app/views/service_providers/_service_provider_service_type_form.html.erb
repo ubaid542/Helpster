@@ -1,0 +1,51 @@
+<%= form_for(@resource, as: @resource_name, url: update_professional_details_path, method: :patch) do |form| %>
+  <div class="space-y-5 my-10 px-6 pt-6 pb-2 shadow-xl bg-white rounded-lg border-2 border-blue-500 max-w-md mx-auto">
+
+    <h2 class="text-3xl font-bold text-gray-800 text-center">Professional Details</h2>
+
+    <!-- Service Category -->
+    <div>
+      <%= form.label :category, class: "block text-md font-semibold text-indigo-600" do %>
+        Service Category<span class="text-md text-red-600">*</span>
+      <% end %>
+      <%= form.select :category, 
+          ['Electrician', 'Plumber', 'House Cleaner', 'Mechanic', 'Carpenter', 'Painter', 'Gardener'],
+          { prompt: "Select your service category" },
+          class: "mt-1 block w-full px-2 py-2 h-11 rounded-md border-gray-300 shadow-md focus:bg-blue-100 focus:shadow-xl focus:outline-none ring-1 focus:ring-2 focus:border-blue-500 focus:ring-blue-500 sm:text-md" %>
+    </div>
+
+    <!-- Years of Experience -->
+    <div>
+        <%= form.label :experience_years, class: "block text-md font-semibold text-indigo-600" do %>
+            Years of Experience<span class="text-md text-red-600">*</span>
+        <% end %>
+
+<%= form.select :experience_years,
+    [
+      ["Less than 1 year", "less_than_1"],
+      ["1–3 years", "1_3"],
+      ["3–5 years", "3_5"],
+      ["5–10 years", "5_10"],
+      ["More than 10 years", "more_than_10"]
+    ],
+    { prompt: "Select experience" },
+    class: "mt-1 block w-full px-2 py-2 h-11 rounded-md border-gray-300 shadow-md focus:bg-blue-100 focus:shadow-xl focus:outline-none ring-1 focus:ring-2 focus:border-blue-500 focus:ring-blue-500 sm:text-md" %>
+
+    </div>
+
+    <!-- Short Info -->
+    <div>
+      <%= form.label :short_info, class: "block text-md font-semibold text-indigo-600" do %>
+        Short Info<span class="text-md text-red-600">*</span>
+      <% end %>
+      <%= form.text_area :short_info, rows: 3, placeholder: "Briefly describe your skills or services...",
+          class: "mt-1 block w-full px-2 py-2 rounded-md border-gray-300 shadow-md focus:bg-blue-100 focus:shadow-xl focus:outline-none ring-1 focus:ring-2 focus:border-blue-500 focus:ring-blue-500 sm:text-md" %>
+    </div>
+
+    <!-- Submit -->
+    <div>
+      <%= form.submit "Save & Continue",
+          class: "w-full py-2 px-4 bg-indigo-600 text-white rounded-md hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500" %>
+    </div>
+  </div>
+<% end %>

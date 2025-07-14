@@ -1,0 +1,3 @@
+<%= turbo_stream.replace "cities_frame" do %>
+  <%= render partial: "service_providers/cities_dropdown", locals: { cities: @cities } %>
+<% end %>

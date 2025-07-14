@@ -1,0 +1,42 @@
+<%= turbo_frame_tag "location_form_frame" do %>
+
+<%= form_with url: location_form_path, data: {turbo_stream: true}, method: :get, local: false do |form| %>
+  <div class="space-y-5 my-10 px-6 pt-6 pb-2 shadow-xl bg-white rounded-lg border-2 border-blue-500 max-w-md mx-auto">
+    <h2 class="text-3xl font-bold text-gray-800 text-center">Location Details</h2>
+
+    <!-- Province -->
+    <div>
+      <%= form.label :province, class: "block text-md font-semibold text-indigo-600" do %>
+        Province<span class="text-md text-red-600">*</span>
+      <% end %>
+
+      <%= form.select :province, 
+            options_for_select(@provinces, @selected_province), 
+            {}, 
+            {
+              class: "mt-1 block w-full px-2 py-2 h-11 rounded-md border-gray-300 shadow-md focus:bg-blue-100 focus:shadow-xl focus:outline-none ring-1 focus:ring-2 focus:border-blue-500 focus:ring-blue-500 sm:text-md",
+              id: "province_select",
+              onchange: "this.form.requestSubmit()"
+            } %>
+    </div>
+
+    <!-- City -->
+    <div>
+      <%= turbo_frame_tag "cities_frame" do %>
+        <%= render partial: "service_providers/cities_dropdown", locals: { cities: @cities } %>
+      <% end %>
+    </div>
+
+    <!-- Address -->
+    <div>
+      <%= form.label :address, class: "block text-md font-semibold text-indigo-600" do %>
+        Exact Address<span class="text-md text-red-600">*</span>
+      <% end %>
+      <%= form.text_area :address, rows: 3,
+          placeholder: "Street No. / Area / Nearby Landmark...",
+          class: "mt-1 block w-full px-2 py-2 rounded-md border-gray-300 shadow-md focus:bg-blue-100 focus:shadow-xl focus:outline-none ring-1 focus:ring-2 focus:border-blue-500 focus:ring-blue-500 sm:text-md" %>
+    </div>
+  </div>
+<% end %>
+
+<% end %>

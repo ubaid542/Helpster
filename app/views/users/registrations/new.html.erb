@@ -1,0 +1,5 @@
+<% if @resource.type == "ServiceProvider" %>
+  <%= render "service_providers/service_provider_signup_form" %>
+<% else %>
+  <%= render "clients/registrations/client_signup_form" %>
+<% end %>

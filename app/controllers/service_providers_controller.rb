@@ -35,12 +35,7 @@ class ServiceProvidersController < ApplicationController
                 )
             end
             format.html do
-                # For direct access, render with layout
-                if request.xhr? || params[:partial]
-                    render partial: "service_providers/service_provider_location_form"
-                else
-                    render "service_providers/location_form"
-                end
+                render partial: "service_providers/service_provider_location_form"
             end
             
         end

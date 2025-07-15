@@ -9,7 +9,10 @@ class Users::RegistrationsController < Devise::RegistrationsController
       sign_up(resource_name, resource)
 
       if resource.type == "ServiceProvider"
-        redirect_to service_provider_details_path(resource)
+        respond_to do |format|
+          format.html { redirect_to service_provider_details_path(resource) }
+          format.turbo_stream { redirect_to service_provider_details_path(resource) }
+        end
       else
         respond_to do |format|
           format.html { redirect_to root_path, notice: "Welcome! Account created successfully." }
@@ -25,10 +28,7 @@ class Users::RegistrationsController < Devise::RegistrationsController
       @resource = resource
       @resource_name = resource_name
 
-      rrespond_to do |format|
-        format.html { render :new }
-        format.turbo_stream { render :new }
-      end
+      render :new
     end
   end
 

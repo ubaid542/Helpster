@@ -34,7 +34,8 @@ class ServiceProvidersController < ApplicationController
     end
 
     def update_subcategories
-        @subcategories = subcategories_for(params[:category])
+        @selected_category = params[:category]
+        @subcategories = subcategories_for(@selected_category)
 
         respond_to do |format|
             format.turbo_stream do
@@ -84,12 +85,13 @@ class ServiceProvidersController < ApplicationController
     end
 
 
-
-    private
-
     def professional_params
         params.require(:user).permit(:category, :experience_years, :short_info, subcategories: [])
     end
+
+    private
+
+    
 
     def location_params
         params.require(:user).permit(:province, :city, :address)

@@ -1,13 +1,22 @@
 class ServiceProvidersController < ApplicationController
-
+    include ServiceProvidersHelper
     before_action :authenticate_user!
 
 
+   
     def service_details
-        @resource = current_user
-        @resource_name = :user
-        render "service_providers/service_provider_service_type_form"
+    @resource = current_user
+    @resource_name = :user
+    
+    # Load existing subcategories if category is already set
+    if @resource.category.present?
+        @subcategories = subcategories_for(@resource.category)
+    else
+        @subcategories = []
     end
+    
+    render partial: "service_providers/service_provider_service_type_form"
+end
 
     def update_professional_details
         @resource = current_user
@@ -19,19 +28,6 @@ class ServiceProvidersController < ApplicationController
         end
     end
 
-
-    def subcategories_for(category)
-    {
-        "Electrician" => ["Wiring", "Lighting", "Fan Installation"],
-        "Plumber" => ["Leak Fixing", "Pipe Installation", "Water Tank Repair"],
-        "Mechanic" => ["Engine Repair", "Oil Change", "Tire Replacement"],
-        "House Cleaner" => ["car washer", "Carpet Cleaner", "Tire Replacement"],
-        "Carpenter" => ["Engine Repair", "Oil Change", "Tire Replacement"],
-        "Painter" => ["Engine Repair", "Oil Change", "Tire Replacement"],
-        "Gardener" => ["Engine Repair", "Oil Change", "Tire Replacement"]
-        
-    }[category] || []
-    end
 
     def update_subcategories
         @selected_category = params[:category]
@@ -48,6 +44,9 @@ class ServiceProvidersController < ApplicationController
         end
     end
 
+
+
+    
 
     def location_form
         @provinces = ["Punjab", "Sindh", "Balochistan", "KPK"]

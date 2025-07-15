@@ -20,6 +20,5 @@ patch "/location", to: "service_providers#update_location", as: "update_location
 
 get "/update_subcategories", to: "service_providers#update_subcategories", as: :update_subcategories
 
-
 root to: 'home#index'
 end

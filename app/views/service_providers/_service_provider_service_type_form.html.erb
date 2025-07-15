@@ -1,4 +1,4 @@
-<%= form_for(@resource, as: @resource_name, url: update_professional_details_path, method: :patch) do |form| %>
+<%= form_for(@resource, as: @resource_name, url: update_professional_details_path, method: :patch, data: { turbo: true }) do |form| %>
   <div class="space-y-5 my-10 px-6 pt-6 pb-2 shadow-xl bg-white rounded-lg border-2 border-blue-500 max-w-md mx-auto">
 
     <h2 class="text-3xl font-bold text-gray-800 text-center">Professional Details</h2>
@@ -8,25 +8,29 @@
     <%= form.label :category, class: "block text-md font-semibold text-indigo-600" do %>
         Service Category<span class="text-md text-red-600">*</span>
     <% end %>
-    <%= form_with url: update_subcategories_path, data: {turbo_stream: true}, method: :get, local: false do |category_form| %>
+    
+    <%= form_with url: update_subcategories_path, data: { turbo_stream: true }, method: :get, local: false do |category_form| %>
         <%= category_form.select :category, 
             ['Electrician', 'Plumber', 'House Cleaner', 'Mechanic', 'Carpenter', 'Painter', 'Gardener'],
-            { prompt: "Select your service category" },
+            { prompt: "Select your service category", selected: @resource.category },
             {class: "mt-1 block w-full px-2 py-2 h-11 rounded-md border-gray-300 shadow-md focus:bg-blue-100 focus:shadow-xl focus:outline-none ring-1 focus:ring-2 focus:border-blue-500 focus:ring-blue-500 sm:text-md",
-            onchange: "this.form.requestSubmit()" }
+            data: { action: "change->form#updateCategory" },
+            onchange: "this.form.requestSubmit(); document.getElementById('main_category').value = this.value;" }
         %>
-        <% end %>
-        <%= form.hidden_field :category, value: params[:category] %>
+    <% end %>
+    
+    <!-- Hidden field in main form -->
+    <%= form.hidden_field :category, value: @resource.category, id: "main_category" %>
     </div>
+    
     <!-- subcategories -->
     <div>
         <%= turbo_frame_tag "subcategories_frame" do %>
-            <% if params[:category].present? %>
-            <%= render partial: "service_providers/service_provider_service_subcategory", locals: {subcategories: subcategories_for(params[:category])} %>
+            <% if @subcategories&.any? %>
+            <%= render partial: "service_providers/service_provider_service_subcategory", locals: {subcategories: @subcategories} %>
             <% end %>
         <% end %>
     </div>
-
 
     <!-- Years of Experience -->
     <div>

@@ -5,8 +5,29 @@ class Users::SessionsController < Devise::SessionsController
 
   def new
     self.resource = resource_class.new(sign_in_params)
-    respond_with(resource) do
-      render "clients/registrations/service_provider_signup_form"
+    
+    respond_to do |format|
+      format.html { render :new }
+      format.turbo_stream { render :new }
+    end
+  end
+
+  def create
+    self.resource = warden.authenticate!(auth_options)
+    
+    if resource
+      set_flash_message!(:notice, :signed_in)
+      sign_in(resource_name, resource)
+      
+      respond_to do |format|
+        format.html { redirect_to after_sign_in_path_for(resource) }
+        format.turbo_stream { redirect_to after_sign_in_path_for(resource) }
+      end
+    else
+      respond_to do |format|
+        format.html { render :new }
+        format.turbo_stream { render :new }
+      end
     end
   end
 

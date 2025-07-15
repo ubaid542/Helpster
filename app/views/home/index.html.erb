@@ -1,7 +1,161 @@
-<h1>Home#index</h1>
-<p>welcome</p>
 
+<!-- Debug Links - Remove after testing -->
+<div class="p-4 bg-yellow-100 border-b">
+  <p><strong>Debug Links:</strong></p>
+  <div class="space-x-4">
+    <%= link_to "Test Client Signup", new_user_registration_path(type: "Client"), class: "text-blue-600 underline" %>
+    <%= link_to "Test Pro Signup", new_user_registration_path(type: "ServiceProvider"), class: "text-green-600 underline" %>
+    <%= link_to "Test Sign In", new_user_session_path, class: "text-red-600 underline" %>
+  </div>
+</div>
+<!-- End Debug -->
 
-<%= turbo_frame_tag "location_form_frame" do %>
-  <%= render "service_providers/service_provider_service_type_form" %>
-<% end %>
+<!-- Hero Section -->
+<div class="min-h-screen bg-gradient-to-br from-blue-50 via-white to-indigo-50">
+  <!-- Navigation Header -->
+  <nav class="flex justify-between items-center px-6 py-4 bg-white shadow-sm">
+    <div class="flex items-center">
+      <h1 class="text-2xl font-bold text-indigo-600">Helpster</h1>
+    </div>
+    <div class="flex space-x-4">
+      <%= link_to "Sign In", new_user_session_path, class: "px-4 py-2 text-indigo-600 hover:text-indigo-800 font-medium" %>
+    </div>
+  </nav>
+
+  <!-- Main Content -->
+  <div class="max-w-6xl mx-auto px-6 py-16">
+    <!-- Hero Content -->
+    <div class="text-center mb-16">
+      <h1 class="text-5xl font-bold text-gray-900 mb-6">
+        Find Local Services or 
+        <span class="text-indigo-600">Grow Your Business</span>
+      </h1>
+      <p class="text-xl text-gray-600 mb-8 max-w-3xl mx-auto">
+        Connect with trusted local service providers or join our platform to reach new customers. 
+        Your neighborhood marketplace for professional services.
+      </p>
+    </div>
+
+    <!-- Signup Options -->
+    <div class="grid md:grid-cols-2 gap-8 max-w-4xl mx-auto">
+      <!-- Client Signup Card -->
+      <div class="bg-white rounded-xl shadow-xl border border-gray-100 overflow-hidden transform hover:scale-105 transition-transform duration-300">
+        <div class="p-8">
+          <div class="w-16 h-16 bg-blue-100 rounded-full flex items-center justify-center mb-6 mx-auto">
+            <svg class="w-8 h-8 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path>
+            </svg>
+          </div>
+          <h3 class="text-2xl font-bold text-gray-900 text-center mb-4">I Need Services</h3>
+          <p class="text-gray-600 text-center mb-6">
+            Find and hire trusted local professionals for home repairs, cleaning, tutoring, and more.
+          </p>
+          <ul class="space-y-3 mb-8">
+            <li class="flex items-center text-gray-700">
+              <svg class="w-5 h-5 text-green-500 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+              </svg>
+              Browse verified professionals
+            </li>
+            <li class="flex items-center text-gray-700">
+              <svg class="w-5 h-5 text-green-500 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+              </svg>
+              Read reviews and ratings
+            </li>
+            <li class="flex items-center text-gray-700">
+              <svg class="w-5 h-5 text-green-500 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+              </svg>
+              Secure booking and payment
+            </li>
+          </ul>
+          <%= link_to new_user_registration_path(type: "Client"), 
+            class: "w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-3 px-6 rounded-lg transition-colors duration-200 text-center block" do %>
+            Sign Up as Client
+          <% end %>
+        </div>
+      </div>
+
+      <!-- Service Provider Signup Card -->
+      <div class="bg-white rounded-xl shadow-xl border border-gray-100 overflow-hidden transform hover:scale-105 transition-transform duration-300">
+        <div class="p-8">
+          <div class="w-16 h-16 bg-indigo-100 rounded-full flex items-center justify-center mb-6 mx-auto">
+            <svg class="w-8 h-8 text-indigo-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 13.255A23.931 23.931 0 0112 15c-3.183 0-6.22-.62-9-1.745M16 6V4a2 2 0 00-2-2h-4a2 2 0 00-2-2v2m4 6h.01M5 20h14a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path>
+            </svg>
+          </div>
+          <h3 class="text-2xl font-bold text-gray-900 text-center mb-4">I Provide Services</h3>
+          <p class="text-gray-600 text-center mb-6">
+            Join our platform to showcase your skills, reach new customers, and grow your business.
+          </p>
+          <ul class="space-y-3 mb-8">
+            <li class="flex items-center text-gray-700">
+              <svg class="w-5 h-5 text-green-500 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+              </svg>
+              Create professional profile
+            </li>
+            <li class="flex items-center text-gray-700">
+              <svg class="w-5 h-5 text-green-500 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+              </svg>
+              Connect with local customers
+            </li>
+            <li class="flex items-center text-gray-700">
+              <svg class="w-5 h-5 text-green-500 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+              </svg>
+              Manage bookings easily
+            </li>
+          </ul>
+          <%= link_to new_user_registration_path(type: "ServiceProvider"), 
+            class: "w-full bg-indigo-600 hover:bg-indigo-700 text-white font-semibold py-3 px-6 rounded-lg transition-colors duration-200 text-center block" do %>
+            Sign Up as Professional
+          <% end %>
+        </div>
+      </div>
+    </div>
+
+    <!-- Features Section -->
+    <div class="mt-20">
+      <h2 class="text-3xl font-bold text-center text-gray-900 mb-12">Why Choose Helpster?</h2>
+      <div class="grid md:grid-cols-3 gap-8">
+        <div class="text-center">
+          <div class="w-12 h-12 bg-blue-100 rounded-full flex items-center justify-center mx-auto mb-4">
+            <svg class="w-6 h-6 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+            </svg>
+          </div>
+          <h3 class="text-xl font-semibold text-gray-900 mb-2">Verified Professionals</h3>
+          <p class="text-gray-600">All service providers are background checked and verified for your safety.</p>
+        </div>
+        <div class="text-center">
+          <div class="w-12 h-12 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-4">
+            <svg class="w-6 h-6 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1"></path>
+            </svg>
+          </div>
+          <h3 class="text-xl font-semibold text-gray-900 mb-2">Fair Pricing</h3>
+          <p class="text-gray-600">Transparent pricing with no hidden fees. Get quotes upfront.</p>
+        </div>
+        <div class="text-center">
+          <div class="w-12 h-12 bg-purple-100 rounded-full flex items-center justify-center mx-auto mb-4">
+            <svg class="w-6 h-6 text-purple-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"></path>
+            </svg>
+          </div>
+          <h3 class="text-xl font-semibold text-gray-900 mb-2">Local Community</h3>
+          <p class="text-gray-600">Support your local economy by connecting with neighborhood businesses.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Footer -->
+  <footer class="bg-gray-50 border-t border-gray-200 py-8">
+    <div class="max-w-6xl mx-auto px-6 text-center">
+      <p class="text-gray-600">&copy; 2024 Helpster. Connecting communities through trusted local services.</p>
+    </div>
+  </footer>
+</div>

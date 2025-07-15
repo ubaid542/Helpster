@@ -88,7 +88,7 @@ class ServiceProvidersController < ApplicationController
     private
 
     def professional_params
-        params.require(:user).permit(:category, :experience_years, :short_info)
+        params.require(:user).permit(:category, :experience_years, :short_info, subcategories: [])
     end
 
     def location_params

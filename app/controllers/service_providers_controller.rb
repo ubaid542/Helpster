@@ -47,9 +47,14 @@ class ServiceProvidersController < ApplicationController
                         partial: "service_providers/service_provider_service_subcategory",
                         locals: { subcategories: @subcategories }
                     ),
-                    turbo_stream.update(
-                        "hidden_category_field",
-                        @selected_category
+                    turbo_stream.replace(
+                        "main_form_category",
+                        content_tag(:input, nil, {
+                            type: "hidden", 
+                            name: "user[category]", 
+                            value: @selected_category, 
+                            id: "main_form_category"
+                        })
                     )
                 ]
             end

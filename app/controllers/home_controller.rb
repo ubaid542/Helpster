@@ -1,5 +1,15 @@
+
 class HomeController < ApplicationController
   def index
+    # For the back button to work, we need these variables available
+    request.env["devise.mapping"] = Devise.mappings[:user]
+    @resource = User.new
+    @resource_name = :user
+  end
+end
+
+
+  # def index
     # request.env["devise.mapping"] = Devise.mappings[:user]
     #   @resource = User.new
     #   @resource_name = :user
@@ -12,7 +22,7 @@ class HomeController < ApplicationController
     #           else
     #             []
     #           end
-  end
+  # end
 
 #   private
 
@@ -24,4 +34,4 @@ class HomeController < ApplicationController
 #       "KPK" => ["Peshawar", "Abbottabad", "Swat"]
 #     }[province] || []
 #   end
-end
+

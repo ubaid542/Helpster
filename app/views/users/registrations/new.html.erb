@@ -1,5 +1,25 @@
-<% if @resource.type == "ServiceProvider" %>
-  <%= render "service_providers/service_provider_signup_form" %>
-<% else %>
-  <%= render "clients/registrations/client_signup_form" %>
+
+<%= turbo_frame_tag "signup_section" do %>
+  <div class="max-w-2xl mx-auto">
+    <!-- Back button -->
+    <div class="mb-6">
+      <%= link_to root_path, 
+          class: "inline-flex items-center text-indigo-600 hover:text-indigo-800 font-medium",
+          data: { turbo_frame: "signup_section" } do %>
+        <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"></path>
+        </svg>
+        Back to Options
+      <% end %>
+    </div>
+
+    <!-- Render the appropriate form -->
+    <div class = "text-left">
+    <% if @resource.type == "ServiceProvider" %>
+      <%= render "service_providers/service_provider_signup_form" %>
+    <% else %>
+      <%= render "clients/registrations/client_signup_form" %>
+    <% end %>
+    </div>
+  </div>
 <% end %>

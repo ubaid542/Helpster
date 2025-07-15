@@ -1,0 +1,13 @@
+<% if subcategories.present? %>
+  <div class="mt-4">
+    <h4 class="font-semibold text-indigo-700">Select Subcategories:</h4>
+    <% subcategories.each do |subcategory| %>
+      <div class="mt-1">
+        <label>
+          <%= check_box_tag "user[subcategories][]", subcategory %>
+          <%= subcategory %>
+        </label>
+      </div>
+    <% end %>
+  </div>
+<% end %>

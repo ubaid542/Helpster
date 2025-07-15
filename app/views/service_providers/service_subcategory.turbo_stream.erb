@@ -1,0 +1,3 @@
+<%= turbo_stream.replace "subcategories_frame" do %>
+  <%= render partial: "service_providers/service_provider_service_subcategory", locals {subcategories: @subcategories} %>
+<% end %>

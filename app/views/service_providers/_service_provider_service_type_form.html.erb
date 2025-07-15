@@ -4,15 +4,26 @@
     <h2 class="text-3xl font-bold text-gray-800 text-center">Professional Details</h2>
 
     <!-- Service Category -->
+    <%= form_with url: update_subcategories_path, method: :get, local: false do |f| %>
     <div>
-      <%= form.label :category, class: "block text-md font-semibold text-indigo-600" do %>
-        Service Category<span class="text-md text-red-600">*</span>
-      <% end %>
-      <%= form.select :category, 
-          ['Electrician', 'Plumber', 'House Cleaner', 'Mechanic', 'Carpenter', 'Painter', 'Gardener'],
-          { prompt: "Select your service category" },
-          class: "mt-1 block w-full px-2 py-2 h-11 rounded-md border-gray-300 shadow-md focus:bg-blue-100 focus:shadow-xl focus:outline-none ring-1 focus:ring-2 focus:border-blue-500 focus:ring-blue-500 sm:text-md" %>
+        <%= f.label :category, class: "block text-md font-semibold text-indigo-600" do %>
+            Service Category<span class="text-md text-red-600">*</span>
+        <% end %>
+        <%= f.select :category, 
+            ['Electrician', 'Plumber', 'House Cleaner', 'Mechanic', 'Carpenter', 'Painter', 'Gardener'],
+            { prompt: "Select your service category" },
+            class: "mt-1 block w-full px-2 py-2 h-11 rounded-md border-gray-300 shadow-md focus:bg-blue-100 focus:shadow-xl focus:outline-none ring-1 focus:ring-2 focus:border-blue-500 focus:ring-blue-500 sm:text-md",
+            onchange: "this.form.requestSubmit()" 
+        %>
     </div>
+    <% end %>
+    <!-- subcategories -->
+    <div>
+        <%= turbo_frame_tag "subcategories_frame" do %>
+            <%= render partial: "service_providers/service_provider_service_subcategory", locals: {subcategories: @subcategories} %>
+        <% end %>
+    </div>
+
 
     <!-- Years of Experience -->
     <div>

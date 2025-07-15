@@ -20,6 +20,29 @@ class ServiceProvidersController < ApplicationController
     end
 
 
+    def subcategories_for(category)
+    {
+        "Electrician" => ["Wiring", "Lighting", "Fan Installation"],
+        "Plumber" => ["Leak Fixing", "Pipe Installation", "Water Tank Repair"],
+        "Mechanic" => ["Engine Repair", "Oil Change", "Tire Replacement"]
+    }[category] || []
+    end
+
+    def update_subcategories
+        @subcategories = subcategories_for(params[:category])
+
+        respond_to do |format|
+            format.turbo_stream do
+            render turbo_stream: turbo_stream.replace(
+                "subcategories_frame",
+                partial: "service_providers/service_provider_service_subcategory",
+                locals: { subcategories: @subcategories }
+            )
+            end
+        end
+    end
+
+
     def location_form
         @provinces = ["Punjab", "Sindh", "Balochistan", "KPK"]
         @selected_province = params[:province]
@@ -56,7 +79,7 @@ class ServiceProvidersController < ApplicationController
     end
 
 
-    
+
     private
 
     def professional_params

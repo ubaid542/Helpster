@@ -5,26 +5,32 @@ class ServiceProvidersController < ApplicationController
 
    
     def service_details
-    @resource = current_user
-    @resource_name = :user
-    
-    # Load existing subcategories if category is already set
-    if @resource.category.present?
-        @subcategories = subcategories_for(@resource.category)
-    else
-        @subcategories = []
+        @resource = current_user
+        @resource_name = :user
+        
+        # Load existing subcategories if category is already set
+        if @resource.category.present?
+            @subcategories = subcategories_for(@resource.category)
+        else
+            @subcategories = []
+        end
+        
+        render "service_providers/service_provider_service_type_form"
     end
-    
-    render partial: "service_providers/service_provider_service_type_form"
-end
 
     def update_professional_details
         @resource = current_user
         if @resource.update(professional_params)
-        redirect_to root_path, notice: "Signup completed successfully!"
+            redirect_to root_path, notice: "Signup completed successfully!"
         else
-        @resource_name = :user
-        render "service_providers/service_provider_service_type_form"
+            @resource_name = :user
+            # Reload subcategories if there are validation errors
+            if @resource.category.present?
+                @subcategories = subcategories_for(@resource.category)
+            else
+                @subcategories = []
+            end
+            render "service_providers/service_provider_service_type_form"
         end
     end
 
@@ -35,11 +41,17 @@ end
 
         respond_to do |format|
             format.turbo_stream do
-            render turbo_stream: turbo_stream.replace(
-                "subcategories_frame",
-                partial: "service_providers/service_provider_service_subcategory",
-                locals: { subcategories: @subcategories }
-            )
+                render turbo_stream: [
+                    turbo_stream.replace(
+                        "subcategories_frame",
+                        partial: "service_providers/service_provider_service_subcategory",
+                        locals: { subcategories: @subcategories }
+                    ),
+                    turbo_stream.update(
+                        "hidden_category_field",
+                        @selected_category
+                    )
+                ]
             end
         end
     end

@@ -11,8 +11,12 @@ class Users::RegistrationsController < Devise::RegistrationsController
       if resource.type == "ServiceProvider"
         redirect_to service_provider_details_path(resource)
       else
-        redirect_to root_path, notice: "Signed up successfully!"
+        respond_to do |format|
+          format.html { redirect_to root_path, notice: "Welcome! Account created successfully." }
+          format.turbo_stream { redirect_to root_path }
+        end
       end
+      
     else
       clean_up_passwords(resource)
       set_minimum_password_length
@@ -21,21 +25,9 @@ class Users::RegistrationsController < Devise::RegistrationsController
       @resource = resource
       @resource_name = resource_name
 
-      respond_to do |format|
-        format.html do
-          if resource.type == "ServiceProvider"
-            render template: "users/registrations/new"
-          else
-            render "clients/registrations/client_signup_form"
-          end
-        end
-        format.turbo_stream do
-          if resource.type == "ServiceProvider"
-            render template: "users/registrations/new"
-          else
-            render "clients/registrations/client_signup_form"
-          end
-        end
+      rrespond_to do |format|
+        format.html { render :new }
+        format.turbo_stream { render :new }
       end
     end
   end

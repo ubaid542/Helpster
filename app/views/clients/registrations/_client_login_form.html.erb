@@ -1,4 +1,11 @@
-<%= form_for(@resource, as: @resource_name, url: session_path(@resource_name)) do |form| %>
+<%= form_for(@resource, as: @resource_name, url: session_path(@resource_name), data: { turbo_frame: "signup_section" }) do |form| %>
+  
+  <% if alert %>
+    <div class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded mb-4">
+      <%= alert %>
+    </div>
+  <% end %>
+  
   <div class="space-y-5 my-10 px-6 pt-6 pb-2 shadow-xl bg-white rounded-lg border-2 items-center border-blue-500 max-w-md mx-auto">
     
     <h2 class="text-3xl font-bold text-gray-800 text-center">Login</h2>
@@ -36,7 +43,7 @@
     <!-- Link to Signup -->
     <div class="mt-20 text-right">
       <span class="text-sm">Don't have an account? </span>
-      <%= link_to "Sign Up", new_user_registration_path, class: "text-md text-indigo-500 underline" %>
+      <%= link_to "Sign Up", new_user_registration_path, class: "text-md text-indigo-500 underline", data: {turbo_frame: "signup_section"} %>
     </div>
 
   </div>

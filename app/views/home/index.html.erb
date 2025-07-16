@@ -13,7 +13,7 @@
         <div class="hidden md:flex items-center space-x-8">
           <a href="#" class="text-gray-600 hover:text-gray-900 font-medium">Browse Services</a>
           <a href="#" class="text-gray-600 hover:text-gray-900 font-medium">How it Works</a>
-          <%= link_to "Sign In", new_user_session_path, class: "text-gray-600 hover:text-gray-900 font-medium" %>
+          <%= link_to "Sign In", new_user_session_path, class: "text-gray-600 hover:text-gray-900 font-medium", data: {turbo_frame: "signup_section"} %>
           <%= button_to "Join as Pro", new_user_registration_path(type: "ServiceProvider"), 
               method: :get,
               class: "bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-md font-medium transition-colors",

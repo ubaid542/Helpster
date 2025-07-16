@@ -68,7 +68,7 @@ class ServiceProvidersController < ApplicationController
     def location_form
         @resource = current_user  # Add this line
         @provinces = ["Punjab", "Sindh", "Balochistan", "KPK"]
-        @selected_province = params[:province]
+        @selected_province = params[:province] || @resource.province 
         @cities = cities_for(@selected_province)
 
         respond_to do |format|
@@ -81,7 +81,7 @@ class ServiceProvidersController < ApplicationController
                 )
             end
             format.html do
-                render partial: "service_providers/service_provider_location_form"
+                render "service_providers/location_form"
             end
             
         end

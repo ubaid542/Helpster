@@ -10,8 +10,8 @@ class Users::RegistrationsController < Devise::RegistrationsController
 
       if resource.type == "ServiceProvider"
         respond_to do |format|
-          format.html { redirect_to service_provider_details_path(resource) }
-          format.turbo_stream { redirect_to service_provider_details_path(resource) }
+          format.html { redirect_to location_form_path  }
+          format.turbo_stream { redirect_to location_form_path }
         end
       else
         respond_to do |format|

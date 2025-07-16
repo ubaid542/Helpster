@@ -1,7 +1,7 @@
 
 
-<%= form_with url: location_form_path, data: {turbo_stream: true}, method: :get, local: false do |form| %>
-  <div class="space-y-5 my-10 px-6 pt-6 pb-2 shadow-xl bg-white rounded-lg border-2 border-blue-500 max-w-md mx-auto">
+<%= form_for(current_user, url: update_location_path, method: :patch, local: true) do |form| %>
+    <div class="space-y-5 my-10 px-6 pt-6 pb-2 shadow-xl bg-white rounded-lg border-2 border-blue-500 max-w-md mx-auto">
     <h2 class="text-3xl font-bold text-gray-800 text-center">Location Details</h2>
 
     <!-- Province -->
@@ -11,7 +11,7 @@
       <% end %>
 
       <%= form.select :province, 
-      options_for_select([["Select Province", ""]] + @provinces.map { |p| [p, p] }, @selected_province), 
+      options_for_select([["Select Province", ""]] + @provinces.map { |p| [p, p] }, @resource.province), 
       {}, 
       {
         class: "mt-1 block w-full px-2 py-2 h-11 rounded-md border-gray-300 shadow-md focus:bg-blue-100 focus:shadow-xl focus:outline-none ring-1 focus:ring-2 focus:border-blue-500 focus:ring-blue-500 sm:text-md",
@@ -34,6 +34,7 @@
       <% end %>
       <%= form.text_area :address, rows: 3,
           placeholder: "Street No. / Area / Nearby Landmark...",
+          value: @resource.address,
           class: "mt-1 block w-full px-2 py-2 rounded-md border-gray-300 shadow-md focus:bg-blue-100 focus:shadow-xl focus:outline-none ring-1 focus:ring-2 focus:border-blue-500 focus:ring-blue-500 sm:text-md" %>
     </div>
 

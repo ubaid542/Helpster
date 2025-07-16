@@ -21,7 +21,7 @@ class ServiceProvidersController < ApplicationController
     def update_professional_details
         @resource = current_user
         if @resource.update(professional_params)
-            redirect_to root_path, notice: "Signup completed successfully!"
+            redirect_to root_path, notice: "Profile setup completed successfully! Welcome to Helpster!"
         else
             @resource_name = :user
             # Reload subcategories if there are validation errors
@@ -66,6 +66,7 @@ class ServiceProvidersController < ApplicationController
     
 
     def location_form
+        @resource = current_user  # Add this line
         @provinces = ["Punjab", "Sindh", "Balochistan", "KPK"]
         @selected_province = params[:province]
         @cities = cities_for(@selected_province)
@@ -90,7 +91,7 @@ class ServiceProvidersController < ApplicationController
         @resource = current_user
         
         if @resource.update(location_params)
-            redirect_to root_path, notice: "Location updated successfully!"
+            redirect_to service_provider_details_path, notice: "Location saved! Now let's set up your professional details."
         else
             @provinces = ["Punjab", "Sindh", "Balochistan", "KPK"]
             @selected_province = params[:user][:province]

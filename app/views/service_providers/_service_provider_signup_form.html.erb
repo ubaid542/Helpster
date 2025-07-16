@@ -56,7 +56,6 @@
                     focus:border-blue-500 focus:ring-blue-500 sm:text-md" %>
         </div>
 
-        <%= form.hidden_field :type, value: "ServiceProvider" %>
         
         <div>
         <%= form.submit "Save & Next",
@@ -65,8 +64,10 @@
         </div>
         <div class = "mt-20 text-right">
             <span class = "text-sm">Already have an account? </span>
-            <%= link_to "Login", home_index_path, class: "text-md text-indigo-500 underline" %>
+            <%= link_to "Login", new_user_session_path, class: "text-md text-indigo-500 underline" %>
         </div>
+                <%= form.hidden_field :type, value: "ServiceProvider" %>
+
         
 
     </div>

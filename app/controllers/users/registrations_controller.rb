@@ -10,13 +10,25 @@ class Users::RegistrationsController < Devise::RegistrationsController
 
       if resource.type == "ServiceProvider"
         respond_to do |format|
-          format.html { redirect_to location_form_path  }
-          format.turbo_stream { redirect_to location_form_path }
+          format.html { redirect_to location_form_path }
+          format.turbo_stream { 
+            setup_location_form_variables
+            render turbo_stream: turbo_stream.replace(
+              "signup_section", 
+              partial: "service_providers/location_form_content"
+            )
+          }
         end
       else
         respond_to do |format|
           format.html { redirect_to root_path, notice: "Welcome! Account created successfully." }
-          format.turbo_stream { redirect_to root_path }
+          format.turbo_stream { 
+            render turbo_stream: turbo_stream.replace(
+              "signup_section", 
+              partial: "shared/success_message",
+              locals: { message: "Welcome! Account created successfully." }
+            )
+          }
         end
       end
       
@@ -46,6 +58,24 @@ class Users::RegistrationsController < Devise::RegistrationsController
       format.html { render :new }
       format.turbo_stream { render :new }
     end
+  end
+
+  private
+
+  def setup_location_form_variables
+    @resource = current_user
+    @provinces = ["Punjab", "Sindh", "Balochistan", "KPK"]
+    @selected_province = @resource.province
+    @cities = cities_for(@selected_province)
+  end
+
+  def cities_for(province)
+    {
+      "Punjab" => ["Lahore", "Rawalpindi", "Faisalabad"],
+      "Sindh" => ["Karachi", "Hyderabad", "Sukkur"],
+      "Balochistan" => ["Quetta", "Gwadar", "Turbat"],
+      "KPK" => ["Peshawar", "Abbottabad", "Swat"]
+    }[province] || []
   end
 
   protected

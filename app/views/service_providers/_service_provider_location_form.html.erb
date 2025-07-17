@@ -1,6 +1,11 @@
 <!-- Separate form for province selection -->
+
+<div class="space-y-5 my-10 px-6 pt-6 pb-2 shadow-xl bg-white rounded-lg border-2 border-blue-500 max-w-md mx-auto">
 <%= form_with url: location_form_path, data: {turbo_stream: true}, method: :get, local: false do |province_form| %>
+  
+  <h2 class="text-3xl font-bold text-gray-800 text-center">Location Details</h2>  
   <div>
+  
     <%= province_form.label :province, class: "block text-md font-semibold text-indigo-600" do %>
       Province<span class="text-md text-red-600">*</span>
     <% end %>
@@ -17,12 +22,8 @@
 <% end %>
 
 <!-- Main form for location submission -->
-<%= form_for(@resource, url: update_location_path, method: :patch, local: true) do |form| %>
-    <div class="space-y-5 my-10 px-6 pt-6 pb-2 shadow-xl bg-white rounded-lg border-2 border-blue-500 max-w-md mx-auto">
-    <h2 class="text-3xl font-bold text-gray-800 text-center">Location Details</h2>
-
-    <!-- Hidden field to store selected province -->
-    <%= form.hidden_field :province, value: @selected_province %>
+<%= form_for :user, url: update_location_path, method: :patch, local: true do |form| %>  
+    
 
     <!-- City -->
     <div>
@@ -47,5 +48,7 @@
           class: "w-full bg-indigo-600 hover:bg-indigo-700 text-white font-semibold py-3 px-4 rounded-md shadow-md focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 transition duration-200 ease-in-out transform hover:scale-105" %>
     </div>
 
-  </div>
-<% end %>
+
+    <% end %>
+
+      </div>

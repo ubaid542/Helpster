@@ -36,27 +36,20 @@ class ServiceProvidersController < ApplicationController
 
 
     def update_subcategories
+        @resource = current_user
         @selected_category = params[:category]
+        @resource.update(category: @selected_category) if @selected_category.present?
         @subcategories = subcategories_for(@selected_category)
 
         respond_to do |format|
             format.turbo_stream do
-                render turbo_stream: [
+                render turbo_stream:
                     turbo_stream.replace(
                         "subcategories_frame",
                         partial: "service_providers/service_provider_service_subcategory",
                         locals: { subcategories: @subcategories }
-                    ),
-                    turbo_stream.replace(
-                        "main_form_category",
-                        content_tag(:input, nil, {
-                            type: "hidden", 
-                            name: "user[category]", 
-                            value: @selected_category, 
-                            id: "main_form_category"
-                        })
                     )
-                ]
+                
             end
         end
     end
@@ -66,13 +59,16 @@ class ServiceProvidersController < ApplicationController
     
 
     def location_form
-        @resource = current_user  # Add this line
+        @resource = current_user  
         @provinces = ["Punjab", "Sindh", "Balochistan", "KPK"]
-        @selected_province = params[:province] || @resource.province 
+        if params[:province].present?
+            current_user.update(province: params[:province])  
+        end
+        @selected_province = current_user.province
         @cities = cities_for(@selected_province)
 
         respond_to do |format|
-       
+            
             format.turbo_stream do
                 render turbo_stream: turbo_stream.replace(
                     "cities_frame",
@@ -81,7 +77,7 @@ class ServiceProvidersController < ApplicationController
                 )
             end
             format.html do
-                render "service_providers/location_form"
+                render "service_providers/_location_form"
             end
             
         end
@@ -89,9 +85,17 @@ class ServiceProvidersController < ApplicationController
 
     def update_location
         @resource = current_user
-        
+
         if @resource.update(location_params)
-            redirect_to service_provider_details_path, notice: "Location saved! Now let's set up your professional details."
+            # redirect_to service_provider_details_path, notice: "Location saved! Now let's set up your professional details."
+            respond_to do |format|
+                format.turbo_stream do
+                    render turbo_stream: turbo_stream.replace(
+                        "signup_section",
+                        partial: "service_providers/service_provider_service_type_form"
+                    )
+                end
+            end
         else
             @provinces = ["Punjab", "Sindh", "Balochistan", "KPK"]
             @selected_province = params[:user][:province]
@@ -99,19 +103,20 @@ class ServiceProvidersController < ApplicationController
             
             render partial: "service_providers/service_provider_location_form"
         end
+        
     end
 
 
     def professional_params
-        params.require(:user).permit(:category, :experience_years, :short_info, subcategories: [])
+        params.require(:user).permit(:experience_years, :short_info, subcategories: [])
     end
 
-    private
+   
 
     
 
     def location_params
-        params.require(:user).permit(:province, :city, :address)
+        params.require(:user).permit( :city, :address)
     end
     
     def cities_for(province)

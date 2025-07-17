@@ -17,6 +17,9 @@
   
   
   <%= form_for(@resource, as: @resource_name, url: update_professional_details_path, method: :patch, data: { turbo: true }) do |form| %>
+    <!-- Hidden field to preserve category selection -->
+    <%= form.hidden_field :category, value: @resource.category %>
+    
     <!-- subcategories -->
     <div>
         <%= turbo_frame_tag "subcategories_frame" do %>

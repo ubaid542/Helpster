@@ -108,7 +108,7 @@ class ServiceProvidersController < ApplicationController
 
 
     def professional_params
-        params.require(:user).permit(:experience_years, :short_info, subcategories: [])
+        params.require(:user).permit(:category, :experience_years, :short_info, subcategories: [])
     end
 
    

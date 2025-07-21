@@ -31,6 +31,7 @@
         <%= render partial: "service_providers/cities_dropdown", locals: { cities: @cities } %>
       <% end %>
     </div>
+    <%= form.hidden_field :country, value: "Pakistan" %>
 
     <!-- Address -->
     <div>

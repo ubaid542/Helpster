@@ -16,7 +16,8 @@
   <% end %>
   
   
-  <%= form_for(@resource, as: @resource_name, url: update_professional_details_path, method: :patch, data: { turbo: true }) do |form| %>
+  <%= form_for(@resource, as: :user, url: update_professional_details_path, method: :patch, data: { turbo: true }) do |form| %>
+    
     <!-- subcategories -->
     <div>
         <%= turbo_frame_tag "subcategories_frame" do %>
@@ -47,11 +48,11 @@
 
     <!-- Short Info -->
     <div>
-      <%= form.label :short_info, class: "block text-md font-semibold text-indigo-600" do %>
+      <%= form.label :short_info, class: "block text-md font-semibold mt-3 text-indigo-600" do %>
         Short Info<span class="text-md text-red-600">*</span>
       <% end %>
       <%= form.text_area :short_info, rows: 3, placeholder: "Briefly describe your skills or services...",
-          class: "mt-1 block w-full px-2 py-2 rounded-md border-gray-300 shadow-md focus:bg-blue-100 focus:shadow-xl focus:outline-none ring-1 focus:ring-2 focus:border-blue-500 focus:ring-blue-500 sm:text-md" %>
+          class: "mt-1 mb-3 block w-full px-2 py-2 rounded-md border-gray-300 shadow-md focus:bg-blue-100 focus:shadow-xl focus:outline-none ring-1 focus:ring-2 focus:border-blue-500 focus:ring-blue-500 sm:text-md" %>
     </div>
 
     <!-- Submit -->

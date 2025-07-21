@@ -20,11 +20,18 @@ class ServiceProvidersController < ApplicationController
 
     def update_professional_details
         @resource = current_user
+
+         # Debug: Log the parameters being received
+        Rails.logger.debug "=== PROFESSIONAL PARAMS DEBUG ==="
+        Rails.logger.debug "Raw params: #{params.inspect}"
+        Rails.logger.debug "Professional params: #{professional_params.inspect}"
+        Rails.logger.debug "Current user before update: #{@resource.attributes.inspect}"
+
         if @resource.update(professional_params)
             redirect_to root_path, notice: "Profile setup completed successfully! Welcome to Helpster!"
         else
             @resource_name = :user
-            # Reload subcategories if there are validation errors
+
             if @resource.category.present?
                 @subcategories = subcategories_for(@resource.category)
             else
@@ -116,15 +123,32 @@ class ServiceProvidersController < ApplicationController
     
 
     def location_params
-        params.require(:user).permit( :city, :address)
+        params.require(:user).permit( :country, :city, :address)
     end
     
     def cities_for(province)
         {
-        "Punjab" => ["Lahore", "Rawalpindi", "Faisalabad"],
-        "Sindh" => ["Karachi", "Hyderabad", "Sukkur"],
-        "Balochistan" => ["Quetta", "Gwadar", "Turbat"],
-        "KPK" => ["Peshawar", "Abbottabad", "Swat"]
+        "Punjab" => [
+    "Lahore", "Rawalpindi", "Faisalabad", "Multan", "Gujranwala",
+    "Sialkot", "Bahawalpur", "Sargodha", "Sheikhupura", "Rahim Yar Khan",
+    "Jhelum", "Gujrat", "Okara", "Dera Ghazi Khan", "Chiniot",
+    "Kasur", "Vehari", "Mandi Bahauddin", "Narowal", "Muzaffargarh"
+  ],
+  "Sindh" => [
+    "Karachi", "Hyderabad", "Sukkur", "Larkana", "Nawabshah",
+    "Mirpur Khas", "Jacobabad", "Shikarpur", "Dadu", "Kandhkot",
+    "Thatta", "Badin", "Khairpur", "Tando Adam", "Tando Allahyar"
+  ],
+  "Balochistan" => [
+    "Quetta", "Gwadar", "Turbat", "Khuzdar", "Sibi",
+    "Loralai", "Zhob", "Chaman", "Pishin", "Dera Bugti",
+    "Nushki", "Kharan", "Mastung", "Panjgur", "Jiwani"
+  ],
+  "KPK" => [
+    "Peshawar", "Abbottabad", "Swat", "Mardan", "Kohat",
+    "Dera Ismail Khan", "Bannu", "Nowshera", "Charsadda", "Haripur",
+    "Swabi", "Mansehra", "Dir", "Lakki Marwat", "Hangu"
+  ]
         }[province] || []
     end
 

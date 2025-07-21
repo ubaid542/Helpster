@@ -17,10 +17,18 @@
               method: :get,
               class: "bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-md font-medium transition-colors",
               data: { turbo_frame: "main_content" } %>
+              
               <% if user_signed_in? %>
-              <%= current_user&.full_name || "Profile" %>
+                <div class="flex items-center space-x-4">
+                  <span class="text-gray-600">Welcome, <%= current_user.email %></span>
+                  <%= link_to "Sign Out", destroy_user_session_path, 
+                      method: :delete,
+                      class: "text-gray-600 hover:text-gray-900 font-medium" %>
+                </div>
               <% else %>
-              <%= link_to "Sign In", new_user_session_path, class: "text-gray-600 hover:text-gray-900 font-medium", data: {turbo_frame: "signup_section"} %>
+                <%= link_to "Sign In", new_user_session_path, 
+                    class: "text-gray-600 hover:text-gray-900 font-medium", 
+                    data: {turbo_frame: "signup_section"} %>
               <% end %>
         </div>
 

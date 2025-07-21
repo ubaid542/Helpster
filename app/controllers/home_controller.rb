@@ -1,37 +1,8 @@
 
 class HomeController < ApplicationController
   def index
-    # For the back button to work, we need these variables available
-    request.env["devise.mapping"] = Devise.mappings[:user]
-    @resource = User.new
-    @resource_name = :user
+    # Check if user just logged in
+    @just_logged_in = params[:logged_in] == 'true'
   end
 end
-
-
-  # def index
-    # request.env["devise.mapping"] = Devise.mappings[:user]
-    #   @resource = User.new
-    #   @resource_name = :user
-    
-    # # Add these for the location form partial to work without errors:
-    # @provinces = ["Punjab", "Sindh", "Balochistan", "KPK"]
-    # @selected_province = params[:province]
-    # @cities = if @selected_province.present?
-    #             cities_for(@selected_province)
-    #           else
-    #             []
-    #           end
-  # end
-
-#   private
-
-#   def cities_for(province)
-#     {
-#       "Punjab" => ["Lahore", "Rawalpindi", "Faisalabad"],
-#       "Sindh" => ["Karachi", "Hyderabad", "Sukkur"],
-#       "Balochistan" => ["Quetta", "Gwadar", "Turbat"],
-#       "KPK" => ["Peshawar", "Abbottabad", "Swat"]
-#     }[province] || []
-#   end
 

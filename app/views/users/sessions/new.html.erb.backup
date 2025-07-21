@@ -1,0 +1,38 @@
+<%= turbo_frame_tag "signup_section" do %>
+  <div class="bg-white min-h-screen py-8">
+    <div class="max-w-md mx-auto">
+      <!-- Back button -->
+      <div class="mb-6 text-left">
+        <%= link_to root_path, 
+            class: "inline-flex items-center text-blue-600 hover:text-blue-700 font-medium",
+            data: { turbo_frame: "signup_section" } do %>
+          <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"></path>
+          </svg>
+          Back to Home
+        <% end %>
+      </div>
+
+       <!-- Display errors if any -->
+        <% if resource.errors.any? %>
+          <div class="mb-4 bg-red-50 border border-red-200 rounded-md p-4">
+            <div class="ml-3">
+              <h3 class="text-sm font-medium text-red-800">
+                Please fix the following errors:
+              </h3>
+              <ul class="mt-2 text-sm text-red-700 list-disc list-inside">
+                <% resource.errors.full_messages.each do |message| %>
+                  <li><%= message %></li>
+                <% end %>
+              </ul>
+            </div>
+          </div>
+        <% end %>
+
+      <!-- Login form container -->
+      <div class="text-left">
+        <%= render "clients/registrations/client_login_form" %>
+      </div>
+    </div>
+  </div>
+<% end %>

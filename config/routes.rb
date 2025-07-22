@@ -1,6 +1,4 @@
 Rails.application.routes.draw do
-  get "bookings/create"
-  get "bookings/destroy"
   mount_avo
   get "home/index"
   devise_for :users, controllers: {
@@ -9,7 +7,6 @@ Rails.application.routes.draw do
   }
  
   get "up" => "rails/health#show", as: :rails_health_check
-
 
   get 'service_provider/service_details', to: 'service_providers#service_details', as: :service_provider_details
 

@@ -10,28 +10,29 @@ class BookingsController < ApplicationController
   
   def create
     @service = Service.find(params[:service_id])
-
-    @booking = Booking.new(
+    
+    # Build booking with strong parameters
+    @booking = Booking.new(booking_params.merge(
       client: current_user,
       service: @service,
-      service_provider_id: @service.provider_id,  
-      date: params[:booking][:date],
-      time: params[:booking][:time],
-      address: params[:booking][:address],
-      notes: params[:booking][:notes],
+      service_provider_id: @service.provider_id,
       price: @service.price,
       status: "pending"
-    )
+    ))
 
     if @booking.save
       redirect_to root_path, notice: "Booking placed successfully."
     else
-      puts "🚨 Booking failed: #{@booking.errors.full_messages}"
+      # Enhanced error logging and user feedback
+      Rails.logger.error "🚨 Booking failed: #{@booking.errors.full_messages.join(', ')}"
+      Rails.logger.error "🚨 Booking params: #{booking_params.inspect}"
+      Rails.logger.error "🚨 Service: #{@service.inspect}"
+      Rails.logger.error "🚨 Current user: #{current_user.inspect}"
+      
+      flash.now[:alert] = "Failed to create booking: #{@booking.errors.full_messages.join(', ')}"
       render :new, status: :unprocessable_entity
     end
   end
-
-
 
   def destroy
     @booking = current_user.bookings.find(params[:id])
@@ -48,6 +49,4 @@ class BookingsController < ApplicationController
   def booking_params
     params.require(:booking).permit(:date, :time, :address, :notes)
   end
-
-
 end

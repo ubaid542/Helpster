@@ -5,4 +5,6 @@ class Client < User
   validates :phone_number, presence: true, length: { minimum: 11 }
   validates :password, presence: true, length: { minimum: 6 }, on: :create
 
+  has_many :bookings, foreign_key: :client_id, dependent: :destroy
+
 end

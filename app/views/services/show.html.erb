@@ -46,9 +46,10 @@
               <p class="font-medium"><%= @service.provider_phone %></p>
             </div>
           </div>
-          <button class="w-full mt-6 bg-blue-600 text-white py-2 px-4 rounded-md hover:bg-blue-700 transition-colors">
-            Book Now
-          </button>
+
+          <%= link_to "Book Now", new_booking_path(service_id: @service.id), class: "bg-blue-600 text-white px-6 py-2 rounded-lg hover:bg-blue-700 transition" %>
+
+        
         </div>
       </div>
     </div>

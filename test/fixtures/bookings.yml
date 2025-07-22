@@ -1,0 +1,19 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  client: one
+  service_provider: one
+  service: one
+  date: 2025-07-22
+  time: MyString
+  status: MyString
+  price: 9.99
+
+two:
+  client: two
+  service_provider: two
+  service: two
+  date: 2025-07-22
+  time: MyString
+  status: MyString
+  price: 9.99

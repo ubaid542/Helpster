@@ -1,4 +1,6 @@
 Rails.application.routes.draw do
+  get "bookings/create"
+  get "bookings/destroy"
   mount_avo
   get "home/index"
   devise_for :users, controllers: {
@@ -19,10 +21,15 @@ Rails.application.routes.draw do
   get 'categories/:category', to: 'categories#show', as: 'category_subcategories'
 
   get 'categories/:category/:subcategory/services', to: 'services#index', as: 'subcategory_services' 
-   
+
   get 'services/:id', to: 'services#show', as: 'service'
 
-  
+  resources :bookings, only: [:new, :create, :destroy]
+
+  resources :services do
+    resources :bookings, only: [:new, :create, :destroy]
+  end
+
   
   get 'all_users', to: 'home#all_users'
 

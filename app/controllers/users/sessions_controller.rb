@@ -1,4 +1,4 @@
-# class Users::SessionsController < Devise::SessionsController
+class Users::SessionsController < Devise::SessionsController
 #   before_action :configure_sign_in_params, only: [:create]
 
 
@@ -46,6 +46,6 @@
 #     params.permit(:email, :password)
 #   end
 
-# end
+end
 
 

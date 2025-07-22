@@ -21,11 +21,7 @@ class ServiceProvidersController < ApplicationController
     def update_professional_details
         @resource = current_user
 
-         # Debug: Log the parameters being received
-        Rails.logger.debug "=== PROFESSIONAL PARAMS DEBUG ==="
-        Rails.logger.debug "Raw params: #{params.inspect}"
-        Rails.logger.debug "Professional params: #{professional_params.inspect}"
-        Rails.logger.debug "Current user before update: #{@resource.attributes.inspect}"
+       
 
         if @resource.update(professional_params)
             redirect_to root_path, notice: "Profile setup completed successfully! Welcome to Helpster!"
@@ -46,7 +42,7 @@ class ServiceProvidersController < ApplicationController
         @resource = current_user
         @selected_category = params[:category]
         @resource.update(category: @selected_category) if @selected_category.present?
-        @subcategories = subcategories_for(@selected_category)
+        @subcategories = subcategory_names_for(@selected_category)
 
         respond_to do |format|
             format.turbo_stream do

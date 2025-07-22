@@ -1,0 +1,43 @@
+<div class="user-list-container" style="padding: 1rem;">
+  <h2 style="margin-bottom: 1rem;">All Registered Users</h2>
+
+  <table style="border-collapse: collapse; border: 1px solid #ccc; table-layout: auto; width: auto;">
+    <thead style="background-color: #D3D3D3;">
+      <tr>
+        <th style="padding: 8px; border: 1px solid #000000; white-space: nowrap;">Full Name</th>
+        <th style="padding: 8px; border: 1px solid #000000; white-space: nowrap;">Email</th>
+        <th style="padding: 8px; border: 1px solid #000000; white-space: nowrap;">Phone</th>
+        <th style="padding: 8px; border: 1px solid #000000; white-space: nowrap;">Type</th>
+        <th style="padding: 8px; border: 1px solid #000000; white-space: nowrap;">Category</th>
+        <th style="padding: 8px; border: 1px solid #000000; white-space: nowrap;">Experience</th>
+        <th style="padding: 8px; border: 1px solid #000000; white-space: nowrap;">Short Info</th>
+        <th style="padding: 8px; border: 1px solid #000000; white-space: nowrap;">Country</th>
+        <th style="padding: 8px; border: 1px solid #000000; white-space: nowrap;">Province</th>
+        <th style="padding: 8px; border: 1px solid #000000; white-space: nowrap;">City</th>
+        <th style="padding: 8px; border: 1px solid #000000; white-space: nowrap;">Address</th>
+        <th style="padding: 8px; border: 1px solid #000000; white-space: nowrap;">Subcategories</th>
+      </tr>
+    </thead>
+
+    <tbody>
+      <% @users.each do |user| %>
+        <tr>
+          <td style="padding: 8px; border: 1px solid #000000; white-space: nowrap;"><%= user.full_name %></td>
+          <td style="padding: 8px; border: 1px solid #000000; white-space: nowrap;"><%= user.email %></td>
+          <td style="padding: 8px; border: 1px solid #000000; white-space: nowrap;"><%= user.phone_number %></td>
+          <td style="padding: 8px; border: 1px solid #000000; white-space: nowrap;"><%= user.type %></td>
+          <td style="padding: 8px; border: 1px solid #000000; white-space: nowrap;"><%= user.category %></td>
+          <td style="padding: 8px; border: 1px solid #000000; white-space: nowrap;"><%= user.experience_years %></td>
+          <td style="padding: 8px; border: 1px solid #000000; white-space: nowrap;"><%= user.short_info %></td>
+          <td style="padding: 8px; border: 1px solid #000000; white-space: nowrap;"><%= user.country %></td>
+          <td style="padding: 8px; border: 1px solid #000000; white-space: nowrap;"><%= user.province %></td>
+          <td style="padding: 8px; border: 1px solid #000000; white-space: nowrap;"><%= user.city %></td>
+          <td style="padding: 8px; border: 1px solid #000000; white-space: nowrap;"><%= user.address %></td>
+          <td style="padding: 8px; border: 1px solid #000000; white-space: nowrap;">
+            <%= user.subcategories.join(", ") if user.subcategories.present? %>
+          </td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+</div>

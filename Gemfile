@@ -65,5 +65,6 @@ end
 
 gem "devise"
 
+gem "avo", ">= 3.0"
 
 gem "cssbundling-rails"

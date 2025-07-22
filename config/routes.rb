@@ -1,8 +1,9 @@
 Rails.application.routes.draw do
+  mount_avo
   get "home/index"
   devise_for :users, controllers: {
     registrations: 'users/registrations',
-    # sessions: 'users/sessions'  
+    sessions: 'users/sessions'  
   }
  
   get "up" => "rails/health#show", as: :rails_health_check
@@ -13,12 +14,23 @@ Rails.application.routes.draw do
   patch "/service_providers/professional_details", to: "service_providers#update_professional_details", as: "update_professional_details"
 
   
+  get 'categories', to: 'categories#index'
 
-get "/location_form", to: "service_providers#location_form", as: :location_form
+  get 'categories/:category', to: 'categories#show', as: 'category_subcategories'
 
-patch "/location", to: "service_providers#update_location", as: "update_location"
+  get 'categories/:category/:subcategory/services', to: 'services#index', as: 'subcategory_services' 
+   
+  get 'services/:id', to: 'services#show', as: 'service'
 
-get "/update_subcategories", to: "service_providers#update_subcategories", as: :update_subcategories
+  
+  
+  get 'all_users', to: 'home#all_users'
 
-root to: 'home#index'
+  get "/location_form", to: "service_providers#location_form", as: :location_form
+
+  patch "/location", to: "service_providers#update_location", as: "update_location"
+
+  get "/update_subcategories", to: "service_providers#update_subcategories", as: :update_subcategories
+
+  root to: 'home#index'
 end

@@ -5,7 +5,12 @@ class ApplicationController < ActionController::Base
  protected
 
   def after_sign_in_path_for(resource)
-    root_path(logged_in: true)
+    # Check if they signed up as a client
+    if current_user.type == "Client"
+      categories_path
+    else
+      root_path(logged_in: true)
+    end
   end
 
   def after_sign_out_path_for(resource_or_scope)

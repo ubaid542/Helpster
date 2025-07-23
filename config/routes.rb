@@ -1,6 +1,5 @@
 Rails.application.routes.draw do
-  get "bookings/create"
-  get "bookings/destroy"
+  
   mount_avo
   get "home/index"
   devise_for :users, controllers: {
@@ -15,6 +14,7 @@ Rails.application.routes.draw do
 
   patch "/service_providers/professional_details", to: "service_providers#update_professional_details", as: "update_professional_details"
 
+  get '/dashboard', to: 'client_dashboard#index', as: 'client_dashboard'
   
   get 'categories', to: 'categories#index'
 
@@ -24,10 +24,10 @@ Rails.application.routes.draw do
 
   get 'services/:id', to: 'services#show', as: 'service'
 
-  resources :bookings, only: [:new, :create, :destroy]
+  resources :bookings, only: [:edit, :update, :destroy]
 
   resources :services do
-    resources :bookings, only: [:new, :create, :destroy]
+    resources :bookings, only: [:new, :create]
   end
 
   

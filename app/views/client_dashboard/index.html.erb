@@ -1,0 +1,144 @@
+<div class="max-w-7xl mx-auto p-6">
+  <div class="mb-6 flex justify-between items-center">
+    <h1 class="text-3xl font-bold text-gray-900">My Bookings</h1>
+    <%= link_to "Book New Service", categories_path, class: "bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded" %>
+  </div>
+  
+  <% if @bookings.any? %>
+    
+    <!-- Summary Cards -->
+    <div class="mt-8 mb-6 grid grid-cols-1 md:grid-cols-4 gap-4">
+      <div class="bg-gray-200 p-6 rounded-lg shadow">
+        <div class="text-2xl font-bold text-gray-900"><%= @bookings.count %></div>
+        <div class="text-gray-500">Total Bookings</div>
+      </div>
+      <div class="bg-gray-200 p-6 rounded-lg shadow">
+        <div class="text-2xl font-bold text-yellow-600"><%= @bookings.where(status: 'pending').count %></div>
+        <div class="text-gray-500">Pending</div>
+      </div>
+      <div class="bg-gray-200 p-6 rounded-lg shadow">
+        <div class="text-2xl font-bold text-green-600"><%= @bookings.where(status: 'confirmed').count %></div>
+        <div class="text-gray-500">Confirmed</div>
+      </div>
+      <div class="bg-gray-200 p-6 rounded-lg shadow">
+        <div class="text-2xl font-bold text-blue-600"><%= @bookings.where(status: 'completed').count %></div>
+        <div class="text-gray-500">Completed</div>
+      </div>
+    </div>
+    <div class="bg-white shadow-lg rounded-lg overflow-hidden">
+      <div class="overflow-x-auto">
+        <table class="min-w-full divide-y divide-gray-400">
+          <thead class="bg-gray-50">
+            <tr>
+              <th class="px-6 py-3 text-left text-sm font-bold text-black uppercase tracking-wider">Service</th>
+              <th class="px-6 py-3 text-left text-sm font-bold text-black uppercase tracking-wider">Provider</th>
+              <th class="px-6 py-3 text-left text-sm font-bold text-black uppercase tracking-wider">Date & Time</th>
+              <th class="px-6 py-3 text-left text-sm font-bold text-black uppercase tracking-wider">Address</th>
+              <th class="px-6 py-3 text-left text-sm font-bold text-black uppercase tracking-wider">Status</th>
+              <th class="px-6 py-3 text-left text-sm font-bold text-black uppercase tracking-wider">Price</th>
+              <th class="px-6 py-3 text-left text-sm font-bold text-black uppercase tracking-wider">Booked</th>
+              <th class="px-6 py-3 text-left text-sm font-bold text-black uppercase tracking-wider">Actions</th>
+            </tr>
+          </thead>
+          <tbody class="bg-white divide-y divide-gray-400">
+            <% @bookings.each do |booking| %>
+              <tr class="hover:bg-gray-50">
+                <td class="px-6 py-4">
+                  <div class="text-sm font-medium text-gray-900"><%= booking.service.name %></div>
+                  <div class="text-sm text-gray-500"><%= booking.service.category %> › <%= booking.service.subcategory %></div>
+                  <% if booking.notes.present? %>
+                    <div class="text-xs text-gray-400 mt-1">Note: <%= truncate(booking.notes, length: 50) %></div>
+                  <% end %>
+                </td>
+                <td class="px-6 py-4 whitespace-nowrap">
+                  <div class="text-sm font-medium text-gray-900"><%= booking.service_provider.full_name %></div>
+                  <div class="text-sm text-gray-500"><%= booking.service_provider.email %></div>
+                </td>
+                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+                  <div class="font-medium"><%= booking.date.strftime('%B %d, %Y') %></div>
+                  <div class="text-gray-500"><%= booking.time %></div>
+                </td>
+                <td class="px-6 py-4">
+                  <div class="text-sm text-gray-900 max-w-xs">
+                    <%= truncate(booking.address, length: 40) %>
+                  </div>
+                </td>
+                <td class="px-6 py-4 whitespace-nowrap">
+                  <span class="px-2 py-1 inline-flex text-xs leading-5 font-semibold rounded-full 
+                    <%= case booking.status
+                        when 'pending' then 'bg-yellow-100 text-yellow-800'
+                        when 'confirmed' then 'bg-green-100 text-green-800' 
+                        when 'cancelled' then 'bg-red-100 text-red-800'
+                        when 'completed' then 'bg-blue-100 text-blue-800'
+                        else 'bg-gray-100 text-gray-800'
+                    end %>">
+                    <%= booking.status.capitalize %>
+                  </span>
+                </td>
+                <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
+                  Rs. <%= number_with_delimiter(booking.price.to_i) %>
+                </td>
+                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                  <%= time_ago_in_words(booking.created_at) %> ago
+                </td>
+                <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
+                  <div class="flex space-x-2">
+                    <% if booking.status == 'pending' %>
+                      <!-- Edit button - only for pending bookings -->
+                      <%= link_to edit_booking_path(booking), class: "text-blue-600 hover:text-blue-900" do %>
+                        <svg class="h-4 w-4 inline mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
+                        </svg>
+                        Edit
+                      <% end %>
+                      
+                      <!-- Cancel button - only for pending bookings -->
+                      <%= link_to booking_path(booking), method: :delete, 
+                          data: { 
+                            confirm: "Are you sure you want to cancel this booking?",
+                            turbo_method: :delete
+                          },
+                          class: "text-red-600 hover:text-red-900" do %>
+                        <svg class="h-4 w-4 inline mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                        </svg>
+                        Cancel
+                      <% end %>
+                    <% elsif booking.status == 'confirmed' %>
+                      <!-- Only cancel option for confirmed bookings -->
+                      <%= link_to booking_path(booking), method: :delete, 
+                          data: { 
+                            confirm: "Are you sure you want to cancel this confirmed booking? This may affect the service provider.",
+                            turbo_method: :delete
+                          },
+                          class: "text-red-600 hover:text-red-900" do %>
+                        <svg class="h-4 w-4 inline mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                        </svg>
+                        Cancel
+                      <% end %>
+                    <% else %>
+                      <!-- No actions for cancelled or completed bookings -->
+                      <span class="text-gray-400 text-xs">No actions</span>
+                    <% end %>
+                  </div>
+                </td>
+              </tr>
+            <% end %>
+          </tbody>
+        </table>
+      </div>
+    </div>
+    
+    
+  <% else %>
+    <div class="text-center py-12 bg-white rounded-lg shadow">
+      <svg class="mx-auto h-12 w-12 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v10a2 2 0 002 2h8a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" />
+      </svg>
+      <h3 class="mt-2 text-lg font-medium text-gray-900">No bookings yet</h3>
+      <p class="mt-1 text-gray-500">Start by booking a service from our marketplace!</p>
+      <%= link_to "Browse Services", categories_path, class: "mt-6 inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500" %>
+    </div>
+  <% end %>
+</div>

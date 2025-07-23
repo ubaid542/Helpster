@@ -1,12 +1,19 @@
-<div class="bg-gray-50 min-h-screen">
+
+
+<div class="bg-gray-100 min-h-screen">
   <!-- Header Section -->
   <div class="bg-white shadow-sm">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
       <div class="text-center">
         <h1 class="text-4xl font-bold text-gray-900 mb-4">Browse Services</h1>
-        <p class="text-xl text-gray-600 max-w-2xl mx-auto">
+        <p class="text-xl text-gray-600 mb-6 max-w-2xl mx-auto">
           Find the perfect professional for your project. Choose from our wide range of service categories.
         </p>
+        <% if user_signed_in? && current_user.is_a?(Client) %>
+        
+            <%= link_to "View Your Bookings", client_dashboard_path, class: "bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded" %>
+        
+        <% end %>
       </div>
     </div>
   </div>
@@ -144,3 +151,4 @@
     </div>
   </div>
 </div>
+ 

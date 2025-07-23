@@ -8,11 +8,15 @@ class Avo::Resources::Booking < Avo::BaseResource
   def fields
     field :id, as: :id
     field :client, as: :belongs_to
-    field :service_provider, as: :belongs_to
+    field :service_provider, as: :belongs_to  
     field :service, as: :belongs_to
     field :date, as: :date
     field :time, as: :text
-    field :status, as: :text
-    field :price, as: :number
+    field :address, as: :textarea, hide_on: [:index]
+    field :notes, as: :textarea, hide_on: [:index]
+    field :status, as: :select, options: ["pending", "confirmed", "cancelled", "completed"]
+    field :price, as: :number, format_using: -> { "PKR #{value.to_i}" }
+    field :created_at, as: :date_time, hide_on: [:new, :edit]
+    field :updated_at, as: :date_time, hide_on: [:new, :edit]
   end
 end

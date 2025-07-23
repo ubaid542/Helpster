@@ -1,0 +1,79 @@
+<div class="max-w-4xl mx-auto mt-10 p-4">
+  <h2 class="text-2xl font-bold text-gray-800 mb-6">Edit Booking</h2>
+  
+  <%= form_with model: @booking, local: true do |f| %>
+    <!-- Display any errors -->
+    <% if @booking.errors.any? %>
+      <div class="bg-red-50 border border-red-200 rounded-lg p-4 mb-6">
+        <h3 class="text-red-800 font-medium mb-2">Please fix the following errors:</h3>
+        <ul class="text-red-700 text-sm list-disc list-inside">
+          <% @booking.errors.full_messages.each do |message| %>
+            <li><%= message %></li>
+          <% end %>
+        </ul>
+      </div>
+    <% end %>
+
+    <div class="bg-white p-8 shadow-lg rounded-2xl border border-gray-200">
+      <!-- Service Info (Read-only) -->
+      <div class="mb-6 p-4 bg-gray-50 rounded-lg">
+        <h3 class="font-medium text-gray-900"><%= @service.name %></h3>
+        <p class="text-sm text-gray-500"><%= @service.category %> › <%= @service.subcategory %></p>
+        <p class="text-sm text-gray-700">Provider: <%= @service.provider_name %></p>
+        <p class="text-sm text-gray-700">Price: PKR <%= @service.price.to_i %></p>
+      </div>
+
+      <!-- Date Selection -->
+      <div class="mb-6">
+        <label class="block text-gray-700 font-medium mb-2">Select Date *</label>
+        <div class="overflow-x-auto whitespace-nowrap">
+          <% 60.times do |i| %>
+            <% date = Date.today + i %>
+            <label>
+              <%= f.radio_button :date, date, class: "hidden peer", checked: @booking.date == date, required: true %>
+              <div class="inline-block px-4 py-2 m-1 rounded-lg border peer-checked:bg-blue-600 peer-checked:text-white cursor-pointer">
+                <%= date.strftime('%d') %><br><%= date.strftime('%a') %>
+              </div>
+            </label>
+          <% end %>
+        </div>
+      </div>
+
+      <!-- Time Selection -->
+      <div class="mb-6">
+        <label class="block text-gray-700 font-medium mb-2">Select Time *</label>
+        <div class="overflow-x-auto whitespace-nowrap">
+          <% (9..21).each do |hour| %>
+            <% ['00', '30'].each do |min| %>
+              <% time = Time.parse("#{hour}:#{min}") %>
+              <label>
+                <%= f.radio_button :time, time.strftime('%H:%M'), class: "hidden peer", checked: @booking.time == time.strftime('%H:%M'), required: true %>
+                <div class="inline-block px-4 py-2 m-1 rounded-lg border peer-checked:bg-blue-600 peer-checked:text-white cursor-pointer">
+                  <%= time.strftime('%I:%M %p') %>
+                </div>
+              </label>
+            <% end %>
+          <% end %>
+        </div>
+      </div>
+
+      <!-- Address -->
+      <div class="mb-6">
+        <%= f.label :address, "Address *", class: "block text-gray-700 font-medium mb-1" %>
+        <%= f.text_field :address, required: true, class: "w-full px-4 py-2 border rounded-lg", placeholder: "Enter your complete address" %>
+      </div>
+
+      <!-- Notes -->
+      <div class="mb-6">
+        <%= f.label :notes, "Additional Information", class: "block text-gray-700 font-medium mb-1" %>
+        <%= f.text_area :notes, rows: 3, class: "w-full px-4 py-2 border rounded-lg", placeholder: "Any special instructions or requirements" %>
+      </div>
+
+      <!-- Buttons -->
+      <div class="flex space-x-4">
+        <%= f.submit "Update Booking", class: "bg-blue-600 text-white py-3 px-6 rounded-lg hover:bg-blue-700 transition" %>
+        <%= link_to "Cancel", client_dashboard_path, class: "bg-gray-300 text-gray-700 py-3 px-6 rounded-lg hover:bg-gray-400 transition" %>
+      </div>
+    </div>
+  <% end %>
+</div>

@@ -11,23 +11,46 @@ class BookingsController < ApplicationController
   def create
     @service = Service.find(params[:service_id])
 
-    @booking = Booking.new(
+    @booking = Booking.new(booking_params.merge(
       client: current_user,
       service: @service,
-      service_provider_id: @service.provider_id,  
-      date: params[:booking][:date],
-      time: params[:booking][:time],
-      address: params[:booking][:address],
-      notes: params[:booking][:notes],
+      service_provider_id: @service.provider_id,
       price: @service.price,
       status: "pending"
-    )
+    ))
 
     if @booking.save
-      redirect_to root_path, notice: "Booking placed successfully."
+      redirect_to categories_path, notice: "Booking placed successfully."
     else
-      puts "🚨 Booking failed: #{@booking.errors.full_messages}"
+      flash.now[:alert] = "Failed to create booking: #{@booking.errors.full_messages.join(', ')}"
       render :new, status: :unprocessable_entity
+    end
+  end
+
+  def edit
+    @booking = current_user.bookings.find(params[:id])
+    @service = @booking.service
+    
+    if @booking.status != 'pending'
+      redirect_to client_dashboard_path, alert: "You can only edit pending bookings."
+      return
+    end
+  end
+
+
+  def update
+    @booking = current_user.bookings.find(params[:id])
+    @service = @booking.service
+    
+    if @booking.status != 'pending'
+      redirect_to client_dashboard_path, alert: "You can only edit pending bookings."
+      return
+    end
+    
+    if @booking.update(booking_params)
+      redirect_to client_dashboard_path, notice: "Booking updated successfully."
+    else
+      render :edit, status: :unprocessable_entity
     end
   end
 
@@ -35,8 +58,13 @@ class BookingsController < ApplicationController
 
   def destroy
     @booking = current_user.bookings.find(params[:id])
-    @booking.destroy
-    redirect_to root_path, notice: "Booking cancelled successfully."
+    
+    if ['pending', 'confirmed'].include?(@booking.status)
+      @booking.update(status: 'cancelled')
+      redirect_to client_dashboard_path, notice: "Booking cancelled successfully."
+    else
+      redirect_to client_dashboard_path, alert: "Cannot cancel this booking."
+    end
   end
 
   private

@@ -24,7 +24,7 @@ class ServiceProvidersController < ApplicationController
        
 
         if @resource.update(professional_params)
-            redirect_to root_path, notice: "Profile setup completed successfully! Welcome to Helpster!"
+            redirect_to create_services_path, notice: "Great! Now let's create your services."
         else
             @resource_name = :user
 
@@ -34,6 +34,64 @@ class ServiceProvidersController < ApplicationController
                 @subcategories = []
             end
             render "service_providers/service_provider_service_type_form"
+        end
+    end
+
+    def create_services_form
+        @resource = current_user
+        @subcategories = @resource.subcategories || []
+        
+        # Initialize services hash for the form
+        @services_data = {}
+        @subcategories.each do |subcategory|
+            @services_data[subcategory] = {
+                name: "",
+                description: "",
+                price: "",
+                location: @resource.city || ""
+            }
+        end
+        
+        render "service_providers/create_services_form"
+    end
+
+    def create_services
+        @resource = current_user
+        services_params = params[:services] || {}
+        created_services = []
+        errors = []
+
+        services_params.each do |subcategory, service_data|
+            next if service_data[:name].blank? || service_data[:price].blank?
+            
+            service = Service.new(
+                name: service_data[:name],
+                description: service_data[:description],
+                price: service_data[:price],
+                location: service_data[:location],
+                category: @resource.category,
+                subcategory: subcategory,
+                provider_id: @resource.id
+            )
+
+            if service.save
+                created_services << service
+            else
+                errors << "#{subcategory.humanize}: #{service.errors.full_messages.join(', ')}"
+            end
+        end
+
+        if created_services.any?
+            if errors.any?
+                redirect_to root_path, notice: "#{created_services.count} services created successfully! Some had errors: #{errors.join('; ')}"
+            else
+                redirect_to root_path, notice: "Congratulations! #{created_services.count} services created successfully. You're all set to receive bookings!"
+            end
+        else
+            @subcategories = @resource.subcategories || []
+            @services_data = services_params
+            flash.now[:alert] = "Please create at least one service. Errors: #{errors.join('; ')}"
+            render "service_providers/create_services_form"
         end
     end
 

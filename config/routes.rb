@@ -12,6 +12,9 @@ Rails.application.routes.draw do
 
   get 'service_provider/service_details', to: 'service_providers#service_details', as: :service_provider_details
 
+  get "/create_services", to: "service_providers#create_services_form", as: :create_services
+  post "/create_services", to: "service_providers#create_services"
+
   patch "/service_providers/professional_details", to: "service_providers#update_professional_details", as: "update_professional_details"
 
   get '/dashboard', to: 'client_dashboard#index', as: 'client_dashboard'

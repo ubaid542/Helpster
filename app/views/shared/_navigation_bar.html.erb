@@ -9,10 +9,11 @@
             
             <!-- Navigation Links -->
             <div class="hidden md:flex items-center space-x-8">
-            <%= link_to "Browse Services", categories_path %>          <%= link_to "View All Users", all_users_path %>
+            <%= link_to "Browse Services", categories_path %>          
+            <%= link_to "View All Users", all_users_path %>
             <% if current_user.nil? || current_user.type != "ServiceProvider" %>
-            <%= button_to "Join as Pro", new_user_registration_path(type: "ServiceProvider"), 
-                method: :get,
+            <%= link_to "Join as Pro", new_user_registration_path(type: "ServiceProvider"), 
+                
                 class: "bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-md font-medium transition-colors",
                 data: { turbo_frame: "signup_section" } %>
             <% end %>

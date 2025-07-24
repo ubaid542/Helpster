@@ -10,6 +10,10 @@ Rails.application.routes.draw do
   get "up" => "rails/health#show", as: :rails_health_check
 
 
+  get "/create_services", to: "service_providers#create_services_form", as: :create_services
+  
+  post "/create_services", to: "service_providers#create_services"
+
   get 'service_provider/service_details', to: 'service_providers#service_details', as: :service_provider_details
 
   patch "/service_providers/professional_details", to: "service_providers#update_professional_details", as: "update_professional_details"

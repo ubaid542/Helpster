@@ -6,8 +6,13 @@ Rails.application.routes.draw do
     registrations: 'users/registrations',
     sessions: 'users/sessions'  
   }
- 
+
+  
   get "up" => "rails/health#show", as: :rails_health_check
+
+  get '/provider_dashboard', to: 'service_providers#dashboard', as: 'provider_dashboard'
+
+  patch '/update_booking_status/:id', to: 'service_providers#update_booking_status', as: 'update_booking_status'
 
 
   get "/create_services", to: "service_providers#create_services_form", as: :create_services

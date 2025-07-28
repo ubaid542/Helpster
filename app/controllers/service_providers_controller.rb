@@ -84,6 +84,52 @@ class ServiceProvidersController < ApplicationController
         end
 
 
+
+
+
+def dashboard
+  @provider = current_user
+  @services = @provider.services.includes(:bookings)
+  @bookings = @provider.bookings.includes(:client, :service).order(created_at: :desc)
+  
+  # Statistics
+  @total_bookings = @bookings.count
+  @pending_bookings = @bookings.where(status: 'pending').count
+  @confirmed_bookings = @bookings.where(status: 'confirmed').count
+  @completed_bookings = @bookings.where(status: 'completed').count
+  @cancelled_bookings = @bookings.where(status: 'cancelled').count
+  
+  # Revenue calculations
+  @total_revenue = @bookings.where(status: ['completed']).sum(:price)
+  
+  # Recent bookings (last 10)
+  @recent_bookings = @bookings.limit(10)
+ 
+  
+end
+
+def update_booking_status
+  @booking = current_user.bookings.find(params[:id])
+  
+  if @booking.update(status: params[:status])
+    
+    redirect_to provider_dashboard_path, notice: "Booking #{params[:status]} successfully!"
+  else
+    redirect_to provider_dashboard_path, alert: "Unable to update booking status."
+  end
+end
+
+
+
+
+
+
+
+
+
+
+
+
     def create_services_form
         @resource = current_user
         @subcategories = @resource.subcategories || []

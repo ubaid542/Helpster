@@ -20,6 +20,7 @@ class BookingsController < ApplicationController
     ))
 
     if @booking.save
+      BookingMailer.new_booking_notification(@booking).deliver_now
       redirect_to categories_path, notice: "Booking placed successfully."
     else
       flash.now[:alert] = "Failed to create booking: #{@booking.errors.full_messages.join(', ')}"

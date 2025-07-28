@@ -1,0 +1,37 @@
+🎉 NEW BOOKING REQUEST!
+
+Hello <%= @service_provider.full_name %>,
+
+Great news! You have received a new booking request for your "<%= @service.name %>" service.
+
+📋 BOOKING DETAILS
+==================
+
+Service: <%= @service.name %>
+Category: <%= @service.category %> › <%= @service.subcategory %>
+Client Name: <%= @client.full_name %>
+Client Email: <%= @client.email %>
+Date: <%= @booking.date.strftime('%A, %B %d, %Y') %>
+Time: <%= @booking.time %>
+Address: <%= @booking.address %>
+Price: Rs. <%= number_with_delimiter(@booking.price.to_i) %>
+Status: <%= @booking.status.upcase %>
+<% if @booking.notes.present? %>
+Client Notes: <%= @booking.notes %>
+<% end %>
+
+WHAT'S NEXT?
+============
+- Review the booking details above
+- Contact the client if you need any clarification
+- Confirm or manage the booking through your dashboard
+- Prepare for the scheduled service
+
+Thank you for being part of our service marketplace!
+
+Best regards,
+The Service Marketplace Team
+
+---
+This is an automated notification. Please do not reply to this email.
+© <%= Date.current.year %> Service Marketplace. All rights reserved.

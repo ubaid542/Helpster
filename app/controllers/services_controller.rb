@@ -4,7 +4,7 @@ class ServicesController < ApplicationController
     @subcategory = params[:subcategory]
     @category_name = @category.humanize.titleize
     @subcategory_name = @subcategory.humanize.titleize
-    @services = Service.where(category: @category, subcategory: @subcategory)
+    @services = Service.where(category: @category, subcategory: @subcategory)                 
   end
 
   def show

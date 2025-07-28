@@ -82,6 +82,7 @@
               </div>
             </div>
           </div>
+          
 
           <!-- Service Form Fields -->
           <div class="p-6 space-y-6">
@@ -91,7 +92,9 @@
                 <label class="block text-sm font-semibold text-gray-700">
                   Service Name <span class="text-red-500">*</span>
                 </label>
-                <%= text_field_tag "services[#{subcategory}][name]", 
+                <% parameterized_sub = subcategory.parameterize %>
+
+                <%= text_field_tag "services[#{parameterized_sub}][name]", 
                     @services_data[subcategory]&.dig(:name) || "", 
                     class: "w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200", 
                     placeholder: " Professional #{subcategory.humanize}",

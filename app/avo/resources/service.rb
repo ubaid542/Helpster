@@ -14,8 +14,9 @@ class Avo::Resources::Service < Avo::BaseResource
     field :category, as: :text
     field :price, as: :number
     field :location, as: :text
-    field :provider_name, as: :text
+    field :provider_full_name, as: :text
     field :provider_email, as: :text
-    field :provider_phone, as: :text
+    field :provider_phone_number, as: :text
+    field :subcategory, as: :text
   end
 end

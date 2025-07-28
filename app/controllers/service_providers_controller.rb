@@ -43,80 +43,64 @@ class ServiceProvidersController < ApplicationController
 
 
 
+    def create_services
+        @resource = current_user
+        services_params = params[:services] || {}
+        created_services = []
+        errors = []
 
+            services_params.each do |subcategory, service_data|
+                next if service_data[:name].blank? || service_data[:price].blank?
+                
+                service = Service.new(
+                    name: service_data[:name],
+                    description: service_data[:description],
+                    price: service_data[:price],
+                    location: service_data[:location],
+                    category: @resource.category.parameterize,
+                    subcategory: subcategory,
+                    provider_id: @resource.id
+                )
 
-
-
-
-
-
-
-def create_services
-    @resource = current_user
-    services_params = params[:services] || {}
-    created_services = []
-    errors = []
-
-    services_params.each do |subcategory, service_data|
-        next if service_data[:name].blank? || service_data[:price].blank?
+                if service.save
+                    created_services << service
+                else
+                    errors << "#{subcategory.humanize}: #{service.errors.full_messages.join(', ')}"
+                end
+            end
         
-        service = Service.new(
-            name: service_data[:name],
-            description: service_data[:description],
-            price: service_data[:price],
-            location: service_data[:location],
-            category: @resource.category,
-            subcategory: subcategory,
-            provider_id: @resource.id
-        )
-
-        if service.save
-            created_services << service
+        if created_services.any?
+            if errors.any?
+                redirect_to root_path, notice: "#{created_services.count} services created successfully! Some had errors: #{errors.join('; ')}"
+            else
+                redirect_to root_path, notice: "Congratulations! #{created_services.count} services created successfully. You're all set to receive bookings!"
+            end
         else
-            errors << "#{subcategory.humanize}: #{service.errors.full_messages.join(', ')}"
+            @subcategories = @resource.subcategories || []
+            @services_data = services_params
+            flash.now[:alert] = "Please create at least one service. Errors: #{errors.join('; ')}"
+            render "service_providers/create_services_form"
         end
-    end
+        end
 
-    if created_services.any?
-        if errors.any?
-            redirect_to root_path, notice: "#{created_services.count} services created successfully! Some had errors: #{errors.join('; ')}"
-        else
-            redirect_to root_path, notice: "Congratulations! #{created_services.count} services created successfully. You're all set to receive bookings!"
-        end
-    else
+
+    def create_services_form
+        @resource = current_user
         @subcategories = @resource.subcategories || []
-        @services_data = services_params
-        flash.now[:alert] = "Please create at least one service. Errors: #{errors.join('; ')}"
+        
+        # Initialize services hash for the form
+        @services_data = {}
+        @subcategories.each do |subcategory|
+            @services_data[subcategory] = {
+                name: "",
+                description: "",
+                price: "",
+                location: @resource.city || ""
+            }
+        end
+        
         render "service_providers/create_services_form"
     end
-end
-
-
-def create_services_form
-    @resource = current_user
-    @subcategories = @resource.subcategories || []
-    
-    # Initialize services hash for the form
-    @services_data = {}
-    @subcategories.each do |subcategory|
-        @services_data[subcategory] = {
-            name: "",
-            description: "",
-            price: "",
-            location: @resource.city || ""
-        }
-    end
-    
-    render "service_providers/create_services_form"
-end
-
-
-
-
-
-
-
-
 
 
 
@@ -127,7 +111,7 @@ end
     def update_subcategories
         @resource = current_user
         @selected_category = params[:category]
-        @resource.update(category: @selected_category) if @selected_category.present?
+        @resource.update(category: @selected_category.parameterize) if @selected_category.present?
         @subcategories = subcategory_names_for(@selected_category)
 
         respond_to do |format|

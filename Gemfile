@@ -62,6 +62,8 @@ group :test do
   gem "selenium-webdriver"
 end
 
+# PayFast integration
+gem "digest"
 
 gem "devise"
 

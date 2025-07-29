@@ -15,6 +15,11 @@ Rails.application.routes.draw do
   patch '/update_booking_status/:id', to: 'service_providers#update_booking_status', as: 'update_booking_status'
 
 
+  # PayFast routes
+  get '/payfast/return', to: 'payfast#return'
+  get '/payfast/cancel', to: 'payfast#cancel'
+  post '/payfast/notify', to: 'payfast#notify'
+
   get "/create_services", to: "service_providers#create_services_form", as: :create_services
   
   post "/create_services", to: "service_providers#create_services"

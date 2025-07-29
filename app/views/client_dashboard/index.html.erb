@@ -117,9 +117,16 @@
                         </svg>
                         Cancel
                       <% end %>
-                    <% else %>
-                      <!-- No actions for cancelled or completed bookings -->
-                      <span class="text-gray-400 text-xs">No actions</span>
+                    <% elsif booking.status == 'completed' && booking.requires_payment? %>
+                      <%= link_to payfast_payment_url(booking), 
+                          class: "bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded-lg font-medium",
+                          target: "_blank" do %>
+                        💳 Pay Rs. <%= number_with_delimiter(booking.price.to_i) %>
+                      <% end %>
+                    <% elsif booking.paid? %>
+                      <span class="bg-green-100 text-green-800 px-3 py-1 rounded-full text-sm font-medium">
+                        ✅ Paid
+                      </span>
                     <% end %>
                   </div>
                 </td>

@@ -62,6 +62,15 @@ group :test do
   gem "selenium-webdriver"
 end
 
+
+# Add to Gemfile
+gem 'pg', '~> 1.1' # PostgreSQL for Heroku
+gem 'rails_12factor', group: :production # Heroku compatibility
+
+# Make sure you have these
+gem 'puma'
+gem 'bootsnap', require: false
+
 # PayFast integration
 gem "digest"
 

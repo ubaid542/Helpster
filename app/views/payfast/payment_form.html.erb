@@ -1,0 +1,176 @@
+<div class="container mt-5">
+  <div class="row justify-content-center">
+    <div class="col-md-8">
+      <div class="card">
+        <div class="card-header">
+          <h4 class="mb-0">PayFast Payment</h4>
+        </div>
+        <div class="card-body">
+          <div class="row">
+            <div class="col-md-6">
+              <h5>Booking Details</h5>
+              <div class="card bg-light mb-3">
+                <div class="card-body">
+                  <p><strong>Service:</strong> <%= @booking.service.name %></p>
+                  <p><strong>Provider:</strong> <%= @booking.service_provider.name %></p>
+                  <p><strong>Date:</strong> <%= @booking.scheduled_date.strftime("%B %d, %Y") %></p>
+                  <p><strong>Amount:</strong> <span class="text-success h5">PKR <%= @booking.price %></span></p>
+                  <p><strong>Booking ID:</strong> #<%= @booking.id %></p>
+                </div>
+              </div>
+            </div>
+            
+            <div class="col-md-6">
+              <h5>Customer Information</h5>
+              <div class="card bg-light mb-3">
+                <div class="card-body">
+                  <p><strong>Name:</strong> <%= @booking.client.name %></p>
+                  <p><strong>Email:</strong> <%= @booking.client.email %></p>
+                  <p><strong>Phone:</strong> <%= @booking.client.phone %></p>
+                </div>
+              </div>
+            </div>
+          </div>
+          
+          <hr>
+          
+          <h5>Payment Information</h5>
+          <p class="text-muted">Please provide your banking details to proceed with the payment through PayFast.</p>
+          
+          <%= form_with url: payfast_process_payment_path, method: :post, local: true, class: "needs-validation", novalidate: true do |form| %>
+            <%= form.hidden_field :booking_id, value: @booking.id %>
+            
+            <div class="row">
+              <div class="col-md-6">
+                <div class="mb-3">
+                  <%= form.label :bank_code, "Bank Code", class: "form-label" %>
+                  <%= form.select :bank_code, 
+                      options_for_select([
+                        ['Demo Bank (For Testing)', 'DEMO'],
+                        ['Allied Bank', 'ABPL'],
+                        ['Bank Alfalah', 'ALFA'],
+                        ['Bank Al Habib', 'BAHL'],
+                        ['Habib Bank Limited', 'HBL'],
+                        ['MCB Bank', 'MCB'],
+                        ['National Bank of Pakistan', 'NBP'],
+                        ['United Bank Limited', 'UBL']
+                      ], 'DEMO'),
+                      { include_blank: "Select Bank" },
+                      { class: "form-select", required: true } %>
+                  <div class="invalid-feedback">
+                    Please select a bank.
+                  </div>
+                </div>
+              </div>
+              
+              <div class="col-md-6">
+                <div class="mb-3">
+                  <%= form.label :account_number, "Account Number", class: "form-label" %>
+                  <%= form.text_field :account_number, 
+                      class: "form-control", 
+                      placeholder: "Enter your account number",
+                      value: "12353940226802034243",  # Pre-filled for testing
+                      required: true %>
+                  <div class="invalid-feedback">
+                    Please enter your account number.
+                  </div>
+                </div>
+              </div>
+            </div>
+            
+            <div class="row">
+              <div class="col-md-6">
+                <div class="mb-3">
+                  <%= form.label :cnic_number, "CNIC Number", class: "form-label" %>
+                  <%= form.text_field :cnic_number, 
+                      class: "form-control", 
+                      placeholder: "XXXXX-XXXXXXX-X",
+                      value: "4210131315089",  # Pre-filled for testing
+                      maxlength: 15,
+                      required: true %>
+                  <div class="invalid-feedback">
+                    Please enter your CNIC number.
+                  </div>
+                </div>
+              </div>
+              
+              <div class="col-md-6">
+                <div class="mb-3">
+                  <%= form.label :customer_mobile_no, "Mobile Number", class: "form-label" %>
+                  <%= form.text_field :customer_mobile_no, 
+                      class: "form-control", 
+                      placeholder: "03XXXXXXXXX",
+                      value: @booking.client.phone || "03023724270",  # Pre-filled from booking or test data
+                      maxlength: 11,
+                      required: true %>
+                  <div class="invalid-feedback">
+                    Please enter your mobile number.
+                  </div>
+                </div>
+              </div>
+            </div>
+            
+            <div class="alert alert-warning">
+              <strong>Test Mode:</strong> For testing purposes, use the pre-filled values:
+              <ul class="mb-0 mt-2">
+                <li>Bank: Demo Bank</li>
+                <li>Account: 12353940226802034243</li>
+                <li>CNIC: 4210131315089</li>
+                <li>OTP: 123456 (when prompted)</li>
+              </ul>
+            </div>
+            
+            <div class="d-grid gap-2">
+              <%= form.submit "Proceed to Payment", class: "btn btn-primary btn-lg" %>
+            </div>
+          <% end %>
+          
+          <div class="mt-3 text-center">
+            <%= link_to "Cancel", dashboard_path, class: "btn btn-outline-secondary" %>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+// Form validation
+(function() {
+  'use strict';
+  window.addEventListener('load', function() {
+    var forms = document.getElementsByClassName('needs-validation');
+    var validation = Array.prototype.filter.call(forms, function(form) {
+      form.addEventListener('submit', function(event) {
+        if (form.checkValidity() === false) {
+          event.preventDefault();
+          event.stopPropagation();
+        }
+        form.classList.add('was-validated');
+      }, false);
+    });
+  }, false);
+})();
+
+// Format CNIC input
+document.getElementById('cnic_number').addEventListener('input', function(e) {
+  let value = this.value.replace(/[^0-9]/g, '');
+  if (value.length >= 5) {
+    value = value.substring(0, 5) + '-' + value.substring(5);
+  }
+  if (value.length >= 13) {
+    value = value.substring(0, 13) + '-' + value.substring(13, 14);
+  }
+  this.value = value;
+});
+
+// Format mobile number
+document.getElementById('customer_mobile_no').addEventListener('input', function(e) {
+  this.value = this.value.replace(/[^0-9]/g, '');
+});
+
+// Format account number
+document.getElementById('account_number').addEventListener('input', function(e) {
+  this.value = this.value.replace(/[^0-9]/g, '');
+});
+</script>

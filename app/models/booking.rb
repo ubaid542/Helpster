@@ -13,6 +13,19 @@ class Booking < ApplicationRecord
   # Ensure the date is not in the past
   validate :date_cannot_be_in_the_past
 
+  # Payment status methods
+  def paid?
+    payment_status == 'paid'
+  end
+
+  def requires_payment?
+    status == 'completed' && payment_status != 'paid'
+  end
+
+  def payment_pending?
+    payment_status.nil? || payment_status == 'pending'
+  end
+
   private
 
   def date_cannot_be_in_the_past

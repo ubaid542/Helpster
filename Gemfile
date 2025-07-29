@@ -62,6 +62,9 @@ group :test do
   gem "selenium-webdriver"
 end
 
+# JazzCash Payment Gateway integration
+gem "digest"
+gem "dotenv-rails", groups: [:development, :test]
 
 gem "devise"
 

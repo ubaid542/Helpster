@@ -1,0 +1,71 @@
+<div class="container mt-5">
+  <div class="row justify-content-center">
+    <div class="col-md-6">
+      <div class="card">
+        <div class="card-header">
+          <h4 class="mb-0">PayFast Payment Verification</h4>
+        </div>
+        <div class="card-body">
+          <div class="alert alert-info">
+            <strong>OTP Sent!</strong> We've sent a verification code to your registered mobile number. Please enter it below to complete your payment.
+          </div>
+          
+          <div class="mb-3">
+            <h5>Booking Details:</h5>
+            <p><strong>Service:</strong> <%= @booking.service.name %></p>
+            <p><strong>Amount:</strong> PKR <%= @booking.price %></p>
+            <p><strong>Booking ID:</strong> #<%= @booking.id %></p>
+          </div>
+          
+          <%= form_with url: payfast_verify_otp_path, method: :post, local: true, class: "needs-validation", novalidate: true do |form| %>
+            <div class="mb-3">
+              <%= form.label :otp_code, "Enter OTP Code", class: "form-label" %>
+              <%= form.text_field :otp_code, class: "form-control", placeholder: "Enter 6-digit OTP", maxlength: 6, required: true %>
+              <div class="invalid-feedback">
+                Please enter the OTP code.
+              </div>
+            </div>
+            
+            <div class="d-grid gap-2">
+              <%= form.submit "Verify & Complete Payment", class: "btn btn-success btn-lg" %>
+            </div>
+          <% end %>
+          
+          <div class="mt-3 text-center">
+            <small class="text-muted">
+              Didn't receive the code? Please wait 60 seconds before requesting a new one.
+            </small>
+          </div>
+          
+          <div class="mt-3 text-center">
+            <%= link_to "Cancel Payment", dashboard_path, class: "btn btn-outline-secondary" %>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+// Form validation
+(function() {
+  'use strict';
+  window.addEventListener('load', function() {
+    var forms = document.getElementsByClassName('needs-validation');
+    var validation = Array.prototype.filter.call(forms, function(form) {
+      form.addEventListener('submit', function(event) {
+        if (form.checkValidity() === false) {
+          event.preventDefault();
+          event.stopPropagation();
+        }
+        form.classList.add('was-validated');
+      }, false);
+    });
+  }, false);
+})();
+
+// Auto-format OTP input
+document.getElementById('otp_code').addEventListener('input', function(e) {
+  this.value = this.value.replace(/[^0-9]/g, '');
+});
+</script>

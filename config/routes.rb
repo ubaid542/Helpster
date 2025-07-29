@@ -15,7 +15,7 @@ Rails.application.routes.draw do
   patch '/update_booking_status/:id', to: 'service_providers#update_booking_status', as: 'update_booking_status'
 
 
-  # PayFast routes
+  # JazzCash Payment Gateway routes (keeping payfast naming for backward compatibility)
   get '/payfast/return', to: 'payfast#return'
   get '/payfast/cancel', to: 'payfast#cancel'
   post '/payfast/notify', to: 'payfast#notify'

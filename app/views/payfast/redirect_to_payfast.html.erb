@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Redirecting to PayFast Pakistan...</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      text-align: center;
+      padding: 50px;
+      background-color: #f5f5f5;
+      margin: 0;
+    }
+    .container {
+      max-width: 500px;
+      margin: 0 auto;
+      background: white;
+      padding: 40px;
+      border-radius: 10px;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+    }
+    .loading {
+      display: inline-block;
+      width: 40px;
+      height: 40px;
+      border: 3px solid #f3f3f3;
+      border-top: 3px solid #28a745;
+      border-radius: 50%;
+      animation: spin 1s linear infinite;
+      margin: 20px 0;
+    }
+    @keyframes spin {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+    .payfast-logo {
+      color: #28a745;
+      font-weight: bold;
+    }
+    .message {
+      color: #666;
+      margin: 20px 0;
+    }
+    .manual-button {
+      background-color: #28a745;
+      color: white;
+      padding: 12px 24px;
+      border: none;
+      border-radius: 5px;
+      font-size: 16px;
+      cursor: pointer;
+      margin-top: 20px;
+    }
+    .manual-button:hover {
+      background-color: #218838;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h2>Redirecting to <span class="payfast-logo">PayFast Pakistan</span>...</h2>
+    <div class="loading"></div>
+    <p class="message">Please wait while we redirect you to PayFast Pakistan payment gateway.</p>
+    <p class="message">This process is secure and encrypted.</p>
+    
+    <%= raw @form_html %>
+    
+    <noscript>
+      <p style="color: #d9534f;">JavaScript is required for automatic redirection.</p>
+      <button class="manual-button" onclick="document.getElementById('payfast_form').submit();">
+        Continue to PayFast Pakistan
+      </button>
+    </noscript>
+    
+    <div style="margin-top: 30px; font-size: 12px; color: #666;">
+      <p>🔒 Secured by PayFast Pakistan</p>
+      <p><a href="https://gopayfast.com" target="_blank" style="color: #28a745; text-decoration: none;">gopayfast.com</a></p>
+    </div>
+  </div>
+
+  <script>
+    // Fallback if auto-submit doesn't work
+    setTimeout(function() {
+      if (document.getElementById('payfast_form')) {
+        document.getElementById('payfast_form').submit();
+      }
+    }, 2000);
+  </script>
+</body>
+</html>

@@ -70,6 +70,8 @@ end
 # PayFast integration
 gem "digest"
 
+gem "httparty"  # Add this for API calls
+
 gem "devise"
 
 gem "avo", ">= 3.0"

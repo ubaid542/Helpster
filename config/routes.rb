@@ -15,7 +15,9 @@ Rails.application.routes.draw do
   patch '/update_booking_status/:id', to: 'service_providers#update_booking_status', as: 'update_booking_status'
 
 
-  # PayFast routes
+  # PayFast routes - UPDATED
+  get '/payfast/payment/:booking_id', to: 'payfast#payment', as: 'payfast_payment'
+  post '/payfast/process_payment', to: 'payfast#process_payment', as: 'payfast_process_payment'
   get '/payfast/return', to: 'payfast#return'
   get '/payfast/cancel', to: 'payfast#cancel'
   post '/payfast/notify', to: 'payfast#notify'
@@ -52,10 +54,6 @@ Rails.application.routes.draw do
   patch "/location", to: "service_providers#update_location", as: "update_location"
 
   get "/update_subcategories", to: "service_providers#update_subcategories", as: :update_subcategories
-
-
-  
-
 
 
   root to: 'home#index'

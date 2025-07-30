@@ -4,20 +4,34 @@ class SeedsController < ApplicationController
     return head :unauthorized unless Rails.env.development? || params[:secret] == 'helpster2024seeds'
     
     begin
-      # Clear existing data more thoroughly
+      # More aggressive data clearing
       puts "Clearing existing data..."
       
       # Clear in proper order to handle foreign key constraints
-      Booking.destroy_all
-      Service.destroy_all
+      Booking.delete_all
+      Service.delete_all
       
-      # More thorough user clearing
-      ServiceProvider.destroy_all
-      Client.destroy_all
-      User.delete_all  # Use delete_all instead of destroy_all for complete removal
-      
-      # Reset auto-increment counters (if using PostgreSQL)
-      ActiveRecord::Base.connection.reset_pk_sequence!('users') if ActiveRecord::Base.connection.adapter_name == 'PostgreSQL'
+      # Force clear all users with multiple approaches
+      begin
+        ServiceProvider.delete_all
+        Client.delete_all
+        User.delete_all
+        
+        # If using PostgreSQL, reset sequences
+        if ActiveRecord::Base.connection.adapter_name.downcase.include?('postgresql')
+          ActiveRecord::Base.connection.execute("TRUNCATE users RESTART IDENTITY CASCADE;")
+          ActiveRecord::Base.connection.execute("TRUNCATE services RESTART IDENTITY CASCADE;")
+          ActiveRecord::Base.connection.execute("TRUNCATE bookings RESTART IDENTITY CASCADE;")
+        end
+        
+      rescue => clear_error
+        puts "Standard clear failed, trying alternative approach: #{clear_error.message}"
+        
+        # Alternative clearing approach
+        ActiveRecord::Base.connection.execute("DELETE FROM bookings;")
+        ActiveRecord::Base.connection.execute("DELETE FROM services;")
+        ActiveRecord::Base.connection.execute("DELETE FROM users;")
+      end
       
       puts "All existing data cleared successfully."
 
@@ -231,6 +245,14 @@ class SeedsController < ApplicationController
         "composting" => ["Organic Compost Setup", "Garden Waste Composting", "Natural Fertilizer Preparation"]
       }
 
+      # Verify clearing worked
+      remaining_users = User.count
+      if remaining_users > 0
+        puts "Warning: #{remaining_users} users still exist. Attempting force clear..."
+        User.find_each(&:delete)
+        puts "After force clear: #{User.count} users remain"
+      end
+
       # Create service providers and services
       puts "Creating service providers and services..."
 
@@ -243,6 +265,12 @@ class SeedsController < ApplicationController
           # Use provided emails first, then additional ones (keeping them EXACTLY as provided)
           email = all_emails[email_index % all_emails.length]
           email_index += 1
+          
+          # Double-check email doesn't exist
+          if User.exists?(email: email)
+            puts "Email #{email} still exists, skipping..."
+            next
+          end
           
           # Select a random location for this provider
           location = locations.sample
@@ -304,8 +332,13 @@ class SeedsController < ApplicationController
       puts "Creating sample clients..."
       5.times do |i|
         location = locations.sample
+        client_email = "client#{i+1}@example.com"
+        
+        # Skip if client email already exists
+        next if User.exists?(email: client_email)
+        
         Client.create!(
-          email: "client#{i+1}@example.com",
+          email: client_email,
           password: '09090909',
           password_confirmation: '09090909',
           full_name: "Client User #{i+1}",

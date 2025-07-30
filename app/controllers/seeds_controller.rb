@@ -4,12 +4,18 @@ class SeedsController < ApplicationController
     return head :unauthorized unless Rails.env.development? || params[:secret] == 'helpster2024seeds'
     
     begin
-      # Clear existing data
+      # Clear existing data in proper order (due to foreign key constraints)
       puts "Clearing existing data..."
       Booking.destroy_all
       Service.destroy_all
-      ServiceProvider.destroy_all
-      Client.destroy_all
+      
+      # Clear all users (this includes ServiceProvider and Client due to STI)
+      User.destroy_all
+      
+      # Alternative approach if above doesn't work:
+      # ServiceProvider.destroy_all
+      # Client.destroy_all
+      # User.where(type: nil).destroy_all  # Clear any base User records
 
       # Service provider emails provided
       provider_emails = [
@@ -184,7 +190,7 @@ class SeedsController < ApplicationController
           email = all_emails[email_index % all_emails.length]
           email_index += 1
           
-          # Create service provider
+          # Create service provider with unique timestamp to avoid conflicts
           provider = ServiceProvider.create!(
             email: email,
             password: 'password123',

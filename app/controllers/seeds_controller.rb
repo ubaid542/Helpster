@@ -32,7 +32,7 @@ class SeedsController < ApplicationController
         'provider4@example.com'
       ]
 
-      # Categories and their subcategories (in parameterized format)
+      # Categories and their subcategories (in parameterized format - lowercase with dashes)
       categories_data = {
         "electrician" => [
           "wiring-installation", "lighting-fixtures", "ceiling-fan-installation",
@@ -91,7 +91,10 @@ class SeedsController < ApplicationController
         { city: "Quetta", province: "Balochistan", country: "Pakistan" },
         { city: "Sialkot", province: "Punjab", country: "Pakistan" },
         { city: "Hyderabad", province: "Sindh", country: "Pakistan" },
-        { city: "Bahawalpur", province: "Punjab", country: "Pakistan" }
+        { city: "Bahawalpur", province: "Punjab", country: "Pakistan" },
+        { city: "Sargodha", province: "Punjab", country: "Pakistan" },
+        { city: "Sukkur", province: "Sindh", country: "Pakistan" },
+        { city: "Larkana", province: "Sindh", country: "Pakistan" }
       ]
 
       # Sample addresses for different cities
@@ -107,7 +110,15 @@ class SeedsController < ApplicationController
         "Civil Lines",
         "Satellite Town",
         "New City Phase 1",
-        "Commercial Area"
+        "Commercial Area",
+        "Liberty Market Area",
+        "Main Boulevard",
+        "Fortress Stadium",
+        "University Road",
+        "Shah Faisal Colony",
+        "Nazimabad Block 2",
+        "Malir Cantt",
+        "Korangi Industrial"
       ]
 
       # Provider names for each category (using proper casing for display)
@@ -230,18 +241,18 @@ class SeedsController < ApplicationController
             password_confirmation: '09090909',
             full_name: "#{provider_names[category][i]} Owner",
             phone_number: "0300#{rand(1000000..9999999)}",
-            category: category,
-            subcategories: subcategories.sample(rand(4..6)), # Each provider handles 4-6 subcategories
+            category: category,  # parameterized format like "electrician"
+            subcategories: subcategories.sample(rand(4..6)), # parameterized format like "wiring-installation"
             experience_years: rand(2..15),
             short_info: "Professional #{category.gsub('-', ' ')} with #{rand(2..15)} years of experience. Quality work guaranteed.",
-            # Add address fields
+            # Add full address fields
             address: sample_addresses.sample,
             city: location[:city],
             province: location[:province],
             country: location[:country]
           )
           
-          puts "Created #{category} provider: #{provider.full_name} (#{provider.email}) in #{location[:city]}"
+          puts "Created #{category} provider: #{provider.full_name} (#{provider.email}) in #{location[:city]}, #{location[:province]}"
           
           # Create 2 services for each subcategory this provider handles
           provider.subcategories.each do |subcategory|
@@ -265,8 +276,8 @@ class SeedsController < ApplicationController
               Service.create!(
                 name: service_name,
                 description: "#{service_name} - Professional #{category.gsub('-', ' ')} service with experienced technicians. Contact us for quality #{subcategory.gsub('-', ' ')} services.",
-                category: category,
-                subcategory: subcategory,
+                category: category,  # parameterized format like "electrician"
+                subcategory: subcategory,  # parameterized format like "wiring-installation"
                 price: price,
                 location: "#{location[:city]}, #{location[:province]}",
                 provider_id: provider.id
@@ -286,7 +297,7 @@ class SeedsController < ApplicationController
           password_confirmation: '09090909',
           full_name: "Client User #{i+1}",
           phone_number: "0301#{rand(1000000..9999999)}",
-          # Add address fields for clients too
+          # Add full address fields for clients too
           address: sample_addresses.sample,
           city: location[:city],
           province: location[:province],
@@ -296,7 +307,7 @@ class SeedsController < ApplicationController
 
       render json: {
         status: 'success',
-        message: 'Seed data created successfully!',
+        message: 'Seed data created successfully! All previous records deleted and new records added.',
         data: {
           service_providers: ServiceProvider.count,
           services: Service.count,
@@ -306,6 +317,10 @@ class SeedsController < ApplicationController
           password: '09090909',
           service_provider_emails: provider_emails,
           client_emails: (1..5).map { |i| "client#{i}@example.com" }
+        },
+        sample_data: {
+          categories: categories_data.keys,
+          locations: locations.map { |l| "#{l[:city]}, #{l[:province]}" }
         }
       }
 

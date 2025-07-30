@@ -249,7 +249,7 @@ class SeedsController < ApplicationController
           
           # Add timestamp to ensure uniqueness
           timestamp = Time.current.to_i
-          unique_email = "#{timestamp}_#{email}"
+          unique_email = "#{email}"
           
           # Create service provider with password 09090909
           provider = ServiceProvider.create!(

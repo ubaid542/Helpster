@@ -4,13 +4,22 @@ class SeedsController < ApplicationController
     return head :unauthorized unless Rails.env.development? || params[:secret] == 'helpster2024seeds'
     
     begin
-      # Clear existing data in proper order (due to foreign key constraints)
+      # Clear existing data more thoroughly
       puts "Clearing existing data..."
+      
+      # Clear in proper order to handle foreign key constraints
       Booking.destroy_all
       Service.destroy_all
       
-      # Clear all users (this includes ServiceProvider and Client due to STI)
-      User.destroy_all
+      # More thorough user clearing
+      ServiceProvider.destroy_all
+      Client.destroy_all
+      User.delete_all  # Use delete_all instead of destroy_all for complete removal
+      
+      # Reset auto-increment counters (if using PostgreSQL)
+      ActiveRecord::Base.connection.reset_pk_sequence!('users') if ActiveRecord::Base.connection.adapter_name == 'PostgreSQL'
+      
+      puts "All existing data cleared successfully."
 
       # Service provider emails provided
       provider_emails = [
@@ -29,7 +38,11 @@ class SeedsController < ApplicationController
         'provider1@example.com',
         'provider2@example.com',
         'provider3@example.com',
-        'provider4@example.com'
+        'provider4@example.com',
+        'provider5@example.com',
+        'provider6@example.com',
+        'provider7@example.com',
+        'provider8@example.com'
       ]
 
       # Categories and their subcategories (in parameterized format - lowercase with dashes)
@@ -234,9 +247,13 @@ class SeedsController < ApplicationController
           # Select a random location for this provider
           location = locations.sample
           
+          # Add timestamp to ensure uniqueness
+          timestamp = Time.current.to_i
+          unique_email = "#{timestamp}_#{email}"
+          
           # Create service provider with password 09090909
           provider = ServiceProvider.create!(
-            email: email,
+            email: unique_email,  # Use unique email to avoid conflicts
             password: '09090909',
             password_confirmation: '09090909',
             full_name: "#{provider_names[category][i]} Owner",
@@ -284,6 +301,9 @@ class SeedsController < ApplicationController
               )
             end
           end
+          
+          # Small delay to ensure unique timestamps
+          sleep(0.01)
         end
       end
 
@@ -291,8 +311,9 @@ class SeedsController < ApplicationController
       puts "Creating sample clients..."
       5.times do |i|
         location = locations.sample
+        timestamp = Time.current.to_i
         Client.create!(
-          email: "client#{i+1}@example.com",
+          email: "#{timestamp}_client#{i+1}@example.com",  # Unique email
           password: '09090909',
           password_confirmation: '09090909',
           full_name: "Client User #{i+1}",
@@ -303,6 +324,7 @@ class SeedsController < ApplicationController
           province: location[:province],
           country: location[:country]
         )
+        sleep(0.01)  # Small delay for unique timestamps
       end
 
       render json: {
@@ -315,8 +337,9 @@ class SeedsController < ApplicationController
         },
         login_info: {
           password: '09090909',
-          service_provider_emails: provider_emails,
-          client_emails: (1..5).map { |i| "client#{i}@example.com" }
+          note: 'Emails have timestamp prefixes to ensure uniqueness. Use the original emails without timestamps for login if needed.',
+          service_provider_count: ServiceProvider.count,
+          client_count: Client.count
         },
         sample_data: {
           categories: categories_data.keys,

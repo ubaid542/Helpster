@@ -21,7 +21,7 @@ class SeedsController < ApplicationController
       
       puts "All existing data cleared successfully."
 
-      # Service provider emails provided
+      # Service provider emails provided (keeping these EXACTLY as you provided)
       provider_emails = [
         'ranaubaid13579@gmail.com',
         'zain2579257911@gmail.com', 
@@ -240,20 +240,16 @@ class SeedsController < ApplicationController
       categories_data.each do |category, subcategories|
         # Create 3 providers per category
         3.times do |i|
-          # Use provided emails first, then additional ones
+          # Use provided emails first, then additional ones (keeping them EXACTLY as provided)
           email = all_emails[email_index % all_emails.length]
           email_index += 1
           
           # Select a random location for this provider
           location = locations.sample
           
-          # Add timestamp to ensure uniqueness
-          timestamp = Time.current.to_i
-          unique_email = "#{email}"
-          
           # Create service provider with password 09090909
           provider = ServiceProvider.create!(
-            email: unique_email,  # Use unique email to avoid conflicts
+            email: email,  # Use EXACT email as provided
             password: '09090909',
             password_confirmation: '09090909',
             full_name: "#{provider_names[category][i]} Owner",
@@ -301,9 +297,6 @@ class SeedsController < ApplicationController
               )
             end
           end
-          
-          # Small delay to ensure unique timestamps
-          sleep(0.01)
         end
       end
 
@@ -311,9 +304,8 @@ class SeedsController < ApplicationController
       puts "Creating sample clients..."
       5.times do |i|
         location = locations.sample
-        timestamp = Time.current.to_i
         Client.create!(
-          email: "#{timestamp}_client#{i+1}@example.com",  # Unique email
+          email: "client#{i+1}@example.com",
           password: '09090909',
           password_confirmation: '09090909',
           full_name: "Client User #{i+1}",
@@ -324,7 +316,6 @@ class SeedsController < ApplicationController
           province: location[:province],
           country: location[:country]
         )
-        sleep(0.01)  # Small delay for unique timestamps
       end
 
       render json: {
@@ -337,9 +328,8 @@ class SeedsController < ApplicationController
         },
         login_info: {
           password: '09090909',
-          note: 'Emails have timestamp prefixes to ensure uniqueness. Use the original emails without timestamps for login if needed.',
-          service_provider_count: ServiceProvider.count,
-          client_count: Client.count
+          service_provider_emails: provider_emails,
+          client_emails: (1..5).map { |i| "client#{i}@example.com" }
         },
         sample_data: {
           categories: categories_data.keys,

@@ -1,33 +1,44 @@
 module PayfastHelper
   def payfast_payment_url(booking)
-    # PayFast credentials
-    merchant_id = ENV['PAYFAST_MERCHANT_ID']
-    secured_key = ENV['PAYFAST_SECURED_KEY']
+    payfast_payment_path(booking_id: booking.id)
+  end
+
+  def generate_payfast_signature(data)
+    # Remove signature if present
+    data_without_signature = data.except('signature')
     
-    # Payment data
-    data = {
-      merchant_id: merchant_id,
-      secured_key: secured_key,
-      return_url: "#{request.base_url}/payfast/return",
-      cancel_url: "#{request.base_url}/payfast/cancel",
-      callback_url: "#{request.base_url}/payfast/notify",
-      customer_name: booking.client.full_name || 'Customer',
-      customer_email: booking.client.email,
-      customer_phone: booking.client.phone_number || '03001234567',
-      order_id: "BOOKING_#{booking.id}",
-      amount: booking.price.to_i,
-      currency: 'PKR',
-      product_name: "Service Booking ##{booking.id}",
-      product_description: "#{booking.service.name} on #{booking.date}",
-      test_mode: '1'
+    # Create parameter string for PayFast Pakistan
+    param_string = data_without_signature.sort.map { |key, val| "#{key}=#{val}" }.join('&')
+    
+    # Generate MD5 hash
+    Digest::MD5.hexdigest(param_string)
+  end
+
+  def payfast_pakistan_credentials
+    {
+      merchant_id: '110515',
+      secured_key: 'k0S7IvCjSrX3NCkrYJCei0ac',
+      sandbox_url: 'https://sandbox.gopayfast.com/payment/process',
+      live_url: 'https://gopayfast.com/payment/process'
     }
-    
-    # Generate signature
-    param_string = data.sort.map { |k, v| "#{k}=#{v}" }.join('&')
-    signature = Digest::MD5.hexdigest(param_string)
-    data[:signature] = signature
-    
-    # Return PayFast URL
-    "https://sandbox.gopayfast.com/payment/process?#{data.to_query}"
+  end
+
+  def payfast_pakistan_test_details
+    {
+      bank_name: 'Demo Bank',
+      account_number: '12353940226802034243',
+      cnic: '4210131315089',
+      otp: '123456'
+    }
+  end
+
+  # Helper method to get client information from booking
+  def get_client_info(booking)
+    client = User.find(booking.client_id)
+    {
+      name: client.full_name || 'Customer',
+      email: client.email,
+      phone: client.phone_number || '03001234567'
+    }
   end
 end

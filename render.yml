@@ -1,0 +1,24 @@
+databases:
+  - name: helpster-db
+    databaseName: helpster_production
+    user: helpster_user
+
+services:
+  - type: web
+    name: helpster-app
+    env: ruby
+    buildCommand: "./bin/render-build.sh"
+    startCommand: "bundle exec puma -C config/puma.rb"
+    envVars:
+      - key: DATABASE_URL
+        fromDatabase:
+          name: helpster-db
+          property: connectionString
+      - key: RAILS_MASTER_KEY
+        sync: false
+      - key: PAYFAST_MERCHANT_ID
+        value: "110515"
+      - key: PAYFAST_SECURED_KEY
+        value: "k0S7IvCjSrX3NCkrYJCei0ac"
+      - key: RAILS_ENV
+        value: production

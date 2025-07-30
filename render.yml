@@ -22,3 +22,7 @@ services:
         value: "k0S7IvCjSrX3NCkrYJCei0ac"
       - key: RAILS_ENV
         value: production
+      - key: SMTP_USERNAME
+        value: "ranaubaid542@gmail.com"
+      - key: SMTP_PASSWORD
+        value: "cdal kzxh jpmq mkdi"

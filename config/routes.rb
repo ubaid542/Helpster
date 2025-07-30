@@ -53,5 +53,11 @@ Rails.application.routes.draw do
 
   get "/update_subcategories", to: "service_providers#update_subcategories", as: :update_subcategories
 
+
+  if Rails.env.production?
+    get '/run_seeds', to: 'seeds#run'
+  end
+
+
   root to: 'home#index'
 end

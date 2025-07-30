@@ -55,8 +55,7 @@ Rails.application.routes.draw do
 
 
   
-  get '/run_seeds', to: 'seeds#run'
-  
+
 
 
   root to: 'home#index'

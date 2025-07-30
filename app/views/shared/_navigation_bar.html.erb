@@ -9,7 +9,7 @@
             
             <!-- Navigation Links -->
             <div class="hidden md:flex items-center space-x-8">
-            <% if current_user.type != "ServiceProvider" %>
+            <% if current_user.nil? || current_user.type != "ServiceProvider" %>
             <%= link_to "Browse Services", categories_path %>          
             <%#= link_to "View All Users", all_users_path %>
             <% end %>

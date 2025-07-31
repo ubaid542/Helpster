@@ -60,7 +60,7 @@ class PayfastController < ApplicationController
     payment_data['signature'] = Digest::MD5.hexdigest(param_string)
 
     # PayFast Pakistan sandbox URL
-    payfast_url = 'https://sandbox.gopayfast.com/payment/process'
+    payfast_url = 'https://gopayfast.com/sandbox/payment/process'
     
     # Create form HTML for auto-submission
     @form_html = generate_payment_form(payment_data, payfast_url)

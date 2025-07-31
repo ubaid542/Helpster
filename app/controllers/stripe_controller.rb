@@ -45,7 +45,7 @@ class StripeController < ApplicationController
         payment_method_types: ['card'],
         line_items: [{
           price_data: {
-            currency: 'usd',  # Stripe works better with USD for international
+            currency: 'pkr',  # Stripe works better with USD for international
             product_data: {
               name: "Service Booking ##{@booking.id}",
               description: "#{@booking.service.name} on #{@booking.date}",

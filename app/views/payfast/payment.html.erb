@@ -34,7 +34,7 @@
     </div>
   </div>
 
-<%= form_tag payfast_process_payment_path, method: :post do %>
+  <%= form_tag payfast_process_payment_path, method: :post, data: { turbo: false } do %>
         <%= hidden_field_tag :booking_id, @booking.id %>
     
     <div class="flex space-x-4">

@@ -29,6 +29,6 @@ services:
       - key: STRIPE_PUBLISHABLE_KEY
         value: "pk_test_51RqsEs62kz6DxMJIdKOPMrf0Ox3BpaVdycHdSfWWK5yt2VKuwYLCHL8xNhmf6omc16Ii7oybLCanmpl4KrWnL0WA004137Rgul"
       - key: STRIPE_SECRET_KEY
-        value: <%= ENV["STRIPE_SECRET_KEY"] %>
+        value: "sk_test_51RqsEs62kz6DxMJIGQ1jx4iz6NccO7CvcbqINJ8KjRpmHP88vN3EYyXgXKQDmnIsPldQLeWLXVF0y6YJvY1cxYgx00ZsuNW0oA"
       - key: STRIPE_WEBHOOK_SECRET
         value: "whsec_wOHRDSZyX9gPTGoO9yE1SItAN7paTEwz"

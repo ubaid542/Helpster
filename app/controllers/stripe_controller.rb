@@ -20,6 +20,9 @@ class StripeController < ApplicationController
 
   def create_checkout_session
     @booking = Booking.find(params[:booking_id])
+
+    Rails.logger.info "Booking price: #{@booking.price}"
+    Rails.logger.info "Calculated amount: #{(@booking.price * 100).to_i}"
     
     # Validate the booking
     unless @booking.client_id == current_user.id && @booking.requires_payment?

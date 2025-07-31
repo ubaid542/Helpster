@@ -15,6 +15,17 @@ Rails.application.routes.draw do
   patch '/update_booking_status/:id', to: 'service_providers#update_booking_status', as: 'update_booking_status'
 
 
+
+  # Stripe routes
+  # In routes.rb
+  get '/stripe/test_env', to: 'stripe#test_env'  # REMOVE AFTER TESTING
+  get '/stripe/payment/:booking_id', to: 'stripe#payment', as: 'stripe_payment'
+  post '/stripe/create_checkout_session', to: 'stripe#create_checkout_session', as: 'stripe_create_checkout_session'
+  get '/stripe/success', to: 'stripe#success'
+  get '/stripe/cancel', to: 'stripe#cancel'
+  post '/stripe/webhook', to: 'stripe#webhook'
+
+
   # PayFast routes - UPDATED
   get '/payfast/payment/:booking_id', to: 'payfast#payment', as: 'payfast_payment'
   post '/payfast/process_payment', to: 'payfast#process_payment', as: 'payfast_process_payment'

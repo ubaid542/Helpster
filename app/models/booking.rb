@@ -26,6 +26,11 @@ class Booking < ApplicationRecord
     payment_status.nil? || payment_status == 'pending'
   end
 
+  # Payment provider methods
+  def paid_via_stripe?
+    payment_provider == 'stripe' && paid?
+  end
+
   private
 
   def date_cannot_be_in_the_past

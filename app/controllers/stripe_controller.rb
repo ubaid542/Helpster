@@ -71,7 +71,7 @@ class StripeController < ApplicationController
       # Update booking with Stripe session info
       @booking.update!(
         payment_status: 'pending',
-        payment_reference: session.id
+        payment_reference: session.id,
       )
 
       # Redirect to Stripe's hosted checkout page

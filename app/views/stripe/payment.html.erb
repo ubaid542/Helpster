@@ -8,7 +8,7 @@
       <p><span class="font-medium">Service:</span> <%= @booking.service.name %></p>
       <p><span class="font-medium">Date:</span> <%= @booking.date.strftime("%B %d, %Y") %></p>
       <p><span class="font-medium">Time:</span> <%= @booking.time %></p>
-      <p><span class="font-medium">Amount:</span> $<%= @booking.price %></p>
+      <p><span class="font-medium">Amount:</span> Rs. <%= @booking.price %></p>
     </div>
   </div>
 
@@ -38,7 +38,7 @@
     <%= form_with url: stripe_create_checkout_session_path, method: :post, data: { turbo: false }, local: true do |form| %>
       <%= form.hidden_field :booking_id, value: @booking.id %>
       
-      <%= form.submit "Pay with Stripe - $#{@booking.price}",
+      <%= form.submit "Pay with Stripe - Rs. #{@booking.price}",
           class: "flex-1 bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 px-6 rounded-lg transition-colors duration-200 cursor-pointer" %>
     <% end %>
     

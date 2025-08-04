@@ -68,6 +68,7 @@ Rails.application.routes.draw do
 
 
   get '/search', to: 'home#search', as: 'search_services'
+  get '/search_suggestions', to: 'home#search_suggestions', as: 'search_suggestions'
 
   root to: 'home#index'
 end

@@ -44,7 +44,31 @@ class Service < ApplicationRecord
     end
 
 
-
-
+    def self.search(query, location = nil)
+        results = all
+        
+        # If both query and location are present
+        if query.present? && location.present?
+            results = results.where(
+            "(name ILIKE ? OR description ILIKE ? OR category ILIKE ? OR subcategory ILIKE ?) AND location ILIKE ?",
+            "%#{query}%", "%#{query}%", "%#{query}%", "%#{query}%", "%#{location}%"
+            )
+        # If only query is present
+        elsif query.present?
+            results = results.where(
+            "name ILIKE ? OR description ILIKE ? OR category ILIKE ? OR subcategory ILIKE ?",
+            "%#{query}%", "%#{query}%", "%#{query}%", "%#{query}%"
+            )
+        # If only location is present
+        elsif location.present?
+            results = results.where("location ILIKE ?", "%#{location}%")
+        # If neither is present, return empty results
+        else
+            return none
+        end
+        
+        # Include provider info and order by name
+        results.includes(:provider).order(:name)
+    end
 
 end

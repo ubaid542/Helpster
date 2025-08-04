@@ -67,5 +67,7 @@ Rails.application.routes.draw do
   get "/update_subcategories", to: "service_providers#update_subcategories", as: :update_subcategories
 
 
+  get '/search', to: 'home#search', as: 'search_services'
+
   root to: 'home#index'
 end

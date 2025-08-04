@@ -15,21 +15,21 @@ ActiveRecord::Schema[8.0].define(version: 2025_07_31_102045) do
   enable_extension "pg_catalog.plpgsql"
 
   create_table "bookings", force: :cascade do |t|
+    t.date "date"
+    t.text "address"
+    t.text "notes"
     t.bigint "client_id"
     t.bigint "service_provider_id"
     t.bigint "service_id"
-    t.date "date"
     t.string "time"
     t.string "status"
+    t.string "payment_status"
+    t.string "payment_reference"
+    t.string "payment_provider"
     t.decimal "price"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.text "address"
-    t.text "notes"
-    t.string "payment_status"
-    t.string "payment_reference"
     t.datetime "paid_at"
-    t.string "payment_provider"
     t.index ["client_id"], name: "index_bookings_on_client_id"
     t.index ["payment_provider"], name: "index_bookings_on_payment_provider"
     t.index ["service_id"], name: "index_bookings_on_service_id"
@@ -37,37 +37,37 @@ ActiveRecord::Schema[8.0].define(version: 2025_07_31_102045) do
   end
 
   create_table "services", force: :cascade do |t|
-    t.string "name"
     t.text "description"
+    t.string "name"
     t.string "category"
-    t.decimal "price"
     t.string "location"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
     t.string "subcategory"
     t.bigint "provider_id"
+    t.decimal "price"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
     t.index ["provider_id"], name: "index_services_on_provider_id"
   end
 
   create_table "users", force: :cascade do |t|
+    t.text "short_info"
+    t.text "address"
+    t.text "subcategories", default: [], array: true
     t.string "email", default: "", null: false
     t.string "encrypted_password", default: "", null: false
     t.string "reset_password_token"
-    t.datetime "reset_password_sent_at"
-    t.datetime "remember_created_at"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
     t.string "type"
     t.string "full_name"
     t.string "phone_number"
     t.string "category"
     t.string "experience_years"
-    t.text "short_info"
     t.string "country"
     t.string "province"
     t.string "city"
-    t.text "address"
-    t.text "subcategories", default: [], array: true
+    t.datetime "reset_password_sent_at"
+    t.datetime "remember_created_at"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
     t.index ["email"], name: "index_users_on_email", unique: true
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
   end

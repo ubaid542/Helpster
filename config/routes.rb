@@ -27,11 +27,11 @@ Rails.application.routes.draw do
 
 
   # PayFast routes - UPDATED
-  get '/payfast/payment/:booking_id', to: 'payfast#payment', as: 'payfast_payment'
-  post '/payfast/process_payment', to: 'payfast#process_payment', as: 'payfast_process_payment'
-  get '/payfast/return', to: 'payfast#return'
-  get '/payfast/cancel', to: 'payfast#cancel'
-  post '/payfast/notify', to: 'payfast#notify'
+  # get '/payfast/payment/:booking_id', to: 'payfast#payment', as: 'payfast_payment'
+  # post '/payfast/process_payment', to: 'payfast#process_payment', as: 'payfast_process_payment'
+  # get '/payfast/return', to: 'payfast#return'
+  # get '/payfast/cancel', to: 'payfast#cancel'
+  # post '/payfast/notify', to: 'payfast#notify'
 
   get "/create_services", to: "service_providers#create_services_form", as: :create_services
   

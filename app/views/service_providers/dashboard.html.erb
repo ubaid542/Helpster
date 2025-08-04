@@ -177,6 +177,7 @@
           <div class="divide-y divide-gray-200">
             <% if @services.any? %>
               <% @services.each do |service| %>
+                <%= link_to edit_service_path(service) do%>
                 <div class="p-4">
                   <div class="flex justify-between items-start">
                     <div>
@@ -189,6 +190,7 @@
                     </div>
                   </div>
                 </div>
+                <% end %>
               <% end %>
             <% else %>
               <div class="p-4 text-center text-gray-500">

@@ -1,0 +1,205 @@
+<div class="min-h-screen bg-gradient-to-br from-blue-50 via-white to-purple-50">
+  <!-- Header Section -->
+  <div class="bg-white shadow-sm border-b border-gray-200">
+    <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+      <div class="text-center">
+        <div class="flex justify-center mb-4">
+          <div class="bg-gradient-to-r from-blue-600 to-purple-600 rounded-full p-3">
+            <svg class="h-8 w-8 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
+            </svg>
+          </div>
+        </div>
+        <h1 class="text-4xl font-bold text-gray-900 mb-2">Edit Your Service</h1>
+        <p class="text-xl text-gray-600 mb-2">Update your service details and pricing</p>
+        <div class="flex justify-center items-center space-x-2 text-sm text-gray-500">
+          <span class="bg-green-100 text-green-800 px-2 py-1 rounded-full">Category: <%= @service.category.humanize %></span>
+          <span class="text-gray-400">•</span>
+          <span class="bg-blue-100 text-blue-800 px-2 py-1 rounded-full">Subcategory: <%= @service.subcategory.humanize %></span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Breadcrumb Navigation -->
+  <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
+    <nav class="flex items-center space-x-2 text-sm text-gray-600">
+      <%= link_to "Dashboard", provider_dashboard_path, class: "hover:text-blue-600 transition-colors" %>
+      <svg class="h-4 w-4 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
+      </svg>
+      <%= link_to "My Services", "#", class: "hover:text-blue-600 transition-colors" %>
+      <svg class="h-4 w-4 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
+      </svg>
+      <span class="text-gray-900 font-medium">Edit Service</span>
+    </nav>
+  </div>
+
+
+  <!-- Main Form -->
+  <%= form_with model: @service, url: service_path(@service), method: :patch, local: true, class: "max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 pb-12" do |f| %>
+    <div class="bg-white rounded-xl shadow-lg border border-gray-200 overflow-hidden transform transition-all duration-300">
+      <!-- Service Card Header -->
+      <div class="bg-gradient-to-r from-blue-500 to-purple-600 px-6 py-6">
+        <div class="flex items-center justify-between">
+          <div class="flex items-center space-x-4">
+            <div class="bg-white bg-opacity-20 rounded-full p-3">
+              <svg class="h-8 w-8 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <% case @service.subcategory %>
+                <% when /repair|fix/ %>
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z" />
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                <% when /clean/ %>
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z" />
+                <% when /install/ %>
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 14l-7 7m0 0l-7-7m7 7V3" />
+                <% else %>
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z" />
+                <% end %>
+              </svg>
+            </div>
+            <div>
+              <h3 class="text-2xl font-bold text-white"><%= @service.subcategory.humanize.titleize %></h3>
+              <p class="text-white text-opacity-90">Update your service details</p>
+            </div>
+          </div>
+          <div class="bg-white bg-opacity-20 rounded-full px-4 py-2">
+            <span class="text-white text-sm font-medium">Service ID: #<%= @service.id %></span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Service Form Fields -->
+      <div class="p-8 space-y-8">
+        <div class="grid md:grid-cols-2 gap-8">
+          <!-- Service Name -->
+          <div class="space-y-3">
+            <label class="block text-sm font-semibold text-gray-700">
+              Service Name <span class="text-red-500">*</span>
+            </label>
+            <%= f.text_field :name, 
+                class: "w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200 text-lg", 
+                placeholder: "Professional #{@service.subcategory.humanize}",
+                required: true %>
+            <p class="text-sm text-gray-500">Make it descriptive and searchable</p>
+          </div>
+
+          <!-- Price -->
+          <div class="space-y-3">
+            <label class="block text-sm font-semibold text-gray-700">
+              Price (PKR) <span class="text-red-500">*</span>
+            </label>
+            <div class="relative">
+              <span class="absolute left-3 top-3 text-gray-500 font-medium text-lg">Rs.</span>
+              <%= f.number_field :price, 
+                  class: "w-full pl-12 pr-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200 text-lg", 
+                  placeholder: "1000",
+                  min: 1,
+                  required: true %>
+            </div>
+            <p class="text-sm text-gray-500">Set a competitive price for your expertise</p>
+          </div>
+        </div>
+
+        <!-- Description -->
+        <div class="space-y-3">
+          <label class="block text-sm font-semibold text-gray-700">
+            Service Description
+          </label>
+          <%= f.text_area :description, 
+              class: "w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200", 
+              rows: 4,
+              placeholder: "Describe your #{@service.subcategory.humanize.downcase} service in detail. What makes you special? What's included? What experience do you have?" %>
+          <p class="text-sm text-gray-500">A detailed description helps customers understand your service better</p>
+        </div>
+
+
+        <!-- Service Preview -->
+        <div class="bg-gradient-to-r from-blue-50 to-purple-50 rounded-lg p-6 border-l-4 border-blue-500">
+          <div class="flex items-start space-x-4">
+            <div class="bg-blue-100 rounded-full p-2">
+              <svg class="h-6 w-6 text-blue-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
+              </svg>
+            </div>
+            <div>
+              <p class="text-lg font-semibold text-gray-900 mb-2">Service Preview</p>
+              <div class="bg-white rounded-lg p-4 border border-gray-200 shadow-sm">
+                <div class="flex justify-between items-start mb-2">
+                  <h4 class="font-semibold text-gray-900" id="preview-name"><%= @service.name %></h4>
+                  <span class="text-lg font-bold text-blue-600" id="preview-price">Rs. <%= @service.price %></span>
+                </div>
+                <p class="text-sm text-gray-600 mb-2" id="preview-description">
+                  <%= @service.description.present? ? @service.description : "Service description will appear here..." %>
+                </p>
+                <div class="flex items-center text-xs text-gray-500">
+                  <svg class="h-4 w-4 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
+                  </svg>
+                  <span id="preview-location"><%= @service.location %></span>
+                  <span class="mx-2">•</span>
+                  <span class="bg-green-100 text-green-800 px-2 py-1 rounded">
+                    <%= @service.category.humanize %> → <%= @service.subcategory.humanize %>
+                  </span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Action Buttons -->
+    <div class="mt-8 bg-white rounded-xl shadow-lg border border-gray-200 p-6">
+      <div class="flex flex-col sm:flex-row justify-between items-center space-y-4 sm:space-y-0">
+        <div class="text-center sm:text-left">
+          <p class="text-lg font-semibold text-gray-900">Ready to Update Your Service?</p>
+          <p class="text-gray-600">Changes will be visible to customers immediately</p>
+        </div>
+        <div class="flex space-x-4">
+          <%= link_to "Cancel", provider_dashboard_path, 
+              class: "px-6 py-3 border border-gray-300 rounded-lg text-gray-700 hover:bg-gray-50 transition-colors duration-200 font-medium" %>
+          <%= f.submit "Update Service", 
+              class: "px-8 py-3 bg-gradient-to-r from-blue-600 to-purple-600 text-white rounded-lg hover:from-blue-700 hover:to-purple-700 transition-all duration-200 font-bold shadow-lg transform hover:scale-105" %>
+        </div>
+      </div>
+    </div>
+
+    <!-- Additional Actions -->
+    <div class="mt-6 flex justify-center">
+      <%= link_to "Delete This Service", service_path(@service), 
+          method: :delete,
+          data: { 
+            confirm: "Are you sure you want to delete this service? This action cannot be undone.",
+            turbo_method: :delete
+          },
+          class: "text-red-600 hover:text-red-800 text-sm font-medium underline" %>
+    </div>
+  <% end %>
+
+  <!-- Help Section -->
+  <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 mt-8 mb-12">
+    <div class="bg-gradient-to-r from-yellow-50 to-orange-50 rounded-xl p-6 border border-yellow-200">
+      <div class="flex items-start space-x-4">
+        <div class="bg-yellow-100 rounded-full p-2">
+          <svg class="h-6 w-6 text-yellow-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+          </svg>
+        </div>
+        <div>
+          <h4 class="font-semibold text-gray-900 mb-2">💡 Tips for Optimizing Your Service</h4>
+          <ul class="text-sm text-gray-700 space-y-1">
+            <li>• Update your description regularly to highlight new skills or certifications</li>
+            <li>• Adjust pricing based on demand and market rates</li>
+            <li>• Use keywords that customers might search for</li>
+            <li>• Keep your service active to appear in customer searches</li>
+            <li>• Consider seasonal adjustments for location-based services</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

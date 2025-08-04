@@ -23,7 +23,7 @@ class Users::RegistrationsController < Devise::RegistrationsController
       else
         respond_to do |format|
           format.html { redirect_to root_path, notice: "Welcome! Account created successfully." }
-          
+          format.turbo_stream { redirect_to root_path, notice: "Welcome! Account created successfully." }
         end
       end
       
@@ -40,10 +40,7 @@ class Users::RegistrationsController < Devise::RegistrationsController
   end
 
   def new
-          #   # Sign out current user if they're trying to sign up as a different type
-          #   # if user_signed_in?
-          #   #   sign_out(current_user)
-          #   # end
+    
 
     request.env["devise.mapping"] = Devise.mappings[:user]
     @resource = User.new(type: params[:type])

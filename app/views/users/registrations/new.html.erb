@@ -13,33 +13,6 @@
       <% end %>
     </div>
 
-
-    <!-- Flash Messages Container -->
-    <% if flash.any? %>
-      <div class="max-w-md mx-auto mb-6">
-        <% flash.each do |type, message| %>
-          <div class="<%= flash_message_classes(type) %> rounded-lg p-4 mb-4">
-            <div class="flex">
-              <div class="flex-shrink-0">
-                <%= flash_message_icon(type) %>
-              </div>
-              <div class="ml-3">
-                <p class="text-sm"><%= message %></p>
-              </div>
-              <div class="ml-auto pl-3">
-                <div class="-mx-1.5 -my-1.5">
-                  <button type="button" class="inline-flex rounded-md p-1.5 hover:bg-opacity-20 focus:outline-none" onclick="this.parentElement.parentElement.parentElement.parentElement.remove()">
-                    <svg class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
-                    </svg>
-                  </button>
-                </div>
-              </div>
-            </div>
-          </div>
-        <% end %>
-      </div>
-    <% end %>
     <!-- Render the appropriate form -->
     <div class = "text-left">
     <% if @resource.type == "ServiceProvider" %>

@@ -14,4 +14,13 @@ module ApplicationHelper
     
     form.select(method, choices, options, html_options)
   end
+  
+  # Debug helper to show stored location (only in development)
+  def debug_stored_location
+    if Rails.env.development? && session[:user_return_to].present?
+      content_tag :div, class: "bg-yellow-100 border border-yellow-400 text-yellow-700 px-4 py-3 rounded mb-4" do
+        "Stored location: #{session[:user_return_to]}"
+      end
+    end
+  end
 end

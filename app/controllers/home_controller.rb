@@ -95,5 +95,13 @@ class HomeController < ApplicationController
       }
     end
   end
+
+  def searchable_dropdown_demo
+    # Load collections for the dropdown examples
+    @services = Service.all
+    @service_providers = ServiceProvider.all
+    @categories = Service.distinct.pluck(:category).compact
+    @locations = Service.distinct.pluck(:location).compact
+  end
   
 end

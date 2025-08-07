@@ -69,6 +69,7 @@ Rails.application.routes.draw do
 
   get '/search', to: 'home#search', as: 'search_services'
   get '/search_suggestions', to: 'home#search_suggestions', as: 'search_suggestions'
+  get '/searchable_dropdown_demo', to: 'home#searchable_dropdown_demo', as: 'searchable_dropdown_demo'
 
   root to: 'home#index'
 end

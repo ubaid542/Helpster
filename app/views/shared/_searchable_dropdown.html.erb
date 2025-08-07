@@ -1,0 +1,47 @@
+<%
+  # Searchable Dropdown Partial
+  # Usage:
+  # <%= render 'shared/searchable_dropdown',
+  #     form: form,
+  #     attribute: :category_id,
+  #     collection: @categories,
+  #     value_method: :id,
+  #     text_method: :name,
+  #     prompt: "Select a category",
+  #     placeholder: "Search categories...",
+  #     empty_message: "No categories found",
+  #     html_options: { class: "additional-class" } %>
+
+  # Set default values
+  placeholder ||= "Search..."
+  empty_message ||= "No results found"
+  prompt ||= "Select an option"
+  value_method ||= :id
+  text_method ||= :name
+  html_options ||= {}
+
+  # Merge controller data attributes
+  controller_data = {
+    controller: "searchable-dropdown",
+    "searchable-dropdown-placeholder-value": placeholder,
+    "searchable-dropdown-empty-message-value": empty_message,
+    action: "focus->searchable-dropdown#inputFocus input->searchable-dropdown#inputInput keydown->searchable-dropdown#inputKeydown click@window->searchable-dropdown#handleDocumentClick"
+  }
+
+  # Merge additional HTML options
+  final_html_options = html_options.merge(controller_data)
+%>
+
+<div <%= raw final_html_options.map { |k, v| "#{k}=\"#{v}\"" }.join(' ') %>>
+  <%= form.collection_select(
+        attribute, 
+        collection, 
+        value_method, 
+        text_method,
+        { prompt: prompt },
+        { 
+          "data-searchable-dropdown-target": "select",
+          "data-action": "click->searchable-dropdown#optionClick mouseenter->searchable-dropdown#optionMouseenter"
+        }
+      ) %>
+</div>

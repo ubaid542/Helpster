@@ -21,7 +21,7 @@ class BookingsController < ApplicationController
 
     if @booking.save
       BookingMailer.new_booking_notification(@booking).deliver_now
-      redirect_to categories_path, notice: "Booking placed successfully."
+      redirect_to booking_path(@booking), notice: "Booking placed successfully! Here are your booking details."
     else
       flash.now[:alert] = "Failed to create booking: #{@booking.errors.full_messages.join(', ')}"
       render :new, status: :unprocessable_entity
@@ -53,6 +53,12 @@ class BookingsController < ApplicationController
     else
       render :edit, status: :unprocessable_entity
     end
+  end
+
+  def show
+      @booking = current_user.bookings.find(params[:id])
+    rescue ActiveRecord::RecordNotFound
+      redirect_to client_dashboard_path, alert: "Booking not found."
   end
 
 

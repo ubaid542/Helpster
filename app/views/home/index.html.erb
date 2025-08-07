@@ -17,66 +17,53 @@
           </p>
 
           
-          <!-- Functional Search Bar -->
-          <!-- Enhanced Search Bar with Autocomplete -->
-          <div class="max-w-2xl mx-auto mb-12" 
-               data-controller="search" 
-               data-search-suggestions-url-value="<%= search_suggestions_path %>"
-               data-search-debounce-delay-value="300">
-            <div class="bg-white rounded-lg shadow-lg p-2">
-              <%= form_with url: search_services_path, method: :get, local: true, class: "flex flex-col md:flex-row gap-2" do |f| %>
-                <!-- Service Query Field with Dropdown -->
-                <div class="flex-1 relative">
-                  <%= f.text_field :q, 
-                      value: params[:q],
-                      placeholder: "What service do you need?",
-                      class: "search-input w-full px-4 py-3 text-lg border-0 focus:ring-0 focus:outline-none rounded-md",
-                      data: { 
-                        search_target: "queryInput",
-                        action: "input->search#queryInputChanged focus->search#queryInputFocused"
-                      } %>
-                  
-                  <!-- Query Suggestions Dropdown -->
-                  <div class="absolute top-full left-0 right-0 bg-white border border-gray-200 rounded-md shadow-lg z-50 hidden"
-                       data-search-target="queryDropdown">
-                    <div class="max-h-64 overflow-y-auto" data-search-target="queryResults">
-                      <!-- Suggestions will be populated here -->
-                    </div>
-                  </div>
-                </div>
+        <!-- Simple Searchable Dropdown Bar -->
+        <div class="max-w-2xl mx-auto mb-12">
+          <div class="bg-white rounded-lg shadow-lg p-2">
+            <%= form_with url: search_services_path, method: :get, local: true, class: "flex flex-col md:flex-row gap-2" do |f| %>
+              
+              <!-- Service Search -->
+              <div class="flex-1 relative">
+                <%= f.text_field :q, 
+                    value: params[:q],
+                    placeholder: "What service do you need?",
+                    class: "w-full px-4 py-3 text-lg border-0 focus:ring-0 focus:outline-none rounded-md",
+                    list: "services-list" %>
+                
+                <datalist id="services-list">
+                  <% @service_options.each do |option| %>
+                    <option value="<%= option.last %>"><%= option.first %></option>
+                  <% end %>
+                </datalist>
+              </div>
 
-                <!-- Location Field with Dropdown -->
-                <div class="flex-1 relative">
-                  <%= f.text_field :location, 
-                      value: params[:location],
-                      placeholder: "Enter your location", 
-                      class: "search-input w-full px-4 py-3 text-lg border-0 focus:ring-0 focus:outline-none rounded-md border-l border-gray-200",
-                      data: { 
-                        search_target: "locationInput",
-                        action: "input->search#locationInputChanged focus->search#locationInputFocused"
-                      } %>
-                  
-                  <!-- Location Suggestions Dropdown -->
-                  <div class="absolute top-full left-0 right-0 bg-white border border-gray-200 rounded-md shadow-lg z-50 hidden"
-                       data-search-target="locationDropdown">
-                    <div class="max-h-64 overflow-y-auto" data-search-target="locationResults">
-                      <!-- Location suggestions will be populated here -->
-                    </div>
-                  </div>
-                </div>
+              <!-- Location Search -->
+              <div class="flex-1 relative">
+                <%= f.text_field :location, 
+                    value: params[:location],
+                    placeholder: "Enter your location",
+                    class: "w-full px-4 py-3 text-lg border-0 focus:ring-0 focus:outline-none rounded-md border-l border-gray-200",
+                    list: "locations-list" %>
+                
+                <datalist id="locations-list">
+                  <% @location_options.each do |option| %>
+                    <option value="<%= option.last %>"><%= option.first %></option>
+                  <% end %>
+                </datalist>
+              </div>
 
-                <%= f.submit "Search", 
-                    class: "bg-blue-600 hover:bg-blue-700 text-white px-8 py-3 rounded-md font-semibold text-lg transition-colors cursor-pointer" %>
-              <% end %>
-            </div>
-            
-            <!-- Search hints -->
-            <div class="text-center mt-3">
-              <p class="text-sm text-gray-500">
-                💡 Start typing to see suggestions • Use ↑↓ arrows to navigate • Press Enter to select
-              </p>
-            </div>
+              <%= f.submit "Search", 
+                  class: "bg-blue-600 hover:bg-blue-700 text-white px-8 py-3 rounded-md font-semibold text-lg transition-colors cursor-pointer" %>
+            <% end %>
           </div>
+          
+          <!-- Search hints -->
+          <div class="text-center mt-3">
+            <p class="text-sm text-gray-500">
+              💡 Type to see suggestions • Select from dropdown • Free text also works
+            </p>
+          </div>
+        </div>
           <!-- Quick Action Buttons -->
           <div>
           <% if user_signed_in? && current_user.is_a?(Client) %>

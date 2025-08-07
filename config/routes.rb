@@ -51,7 +51,7 @@ Rails.application.routes.draw do
 
   get 'services/:id', to: 'services#show', as: 'service'
 
-  resources :bookings, only: [:edit, :update, :destroy]
+  resources :bookings, only: [:show, :edit, :update, :destroy]
 
   resources :services do
     resources :bookings, only: [:new, :create]

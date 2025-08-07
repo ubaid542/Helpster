@@ -42,13 +42,17 @@
           </thead>
           <tbody class="bg-white divide-y divide-gray-400">
             <% @bookings.each do |booking| %>
-              <tr class="hover:bg-gray-50">
+              
+              
+              <tr class="hover:bg-gray-50", onclick="window.location='<%= booking_path(booking) %>'">
                 <td class="px-6 py-4">
+
                   <div class="text-sm whitespace-nowrap font-medium text-gray-900"><%= booking.service.name %></div>
                   <div class="text-sm text-gray-500"><%= booking.service.category %> › <%= booking.service.subcategory %></div>
                   <% if booking.notes.present? %>
                     <div class="text-xs text-gray-400 mt-1">Note: <%= truncate(booking.notes, length: 50) %></div>
                   <% end %>
+                  
                 </td>
                 <td class="px-6 py-4 whitespace-nowrap">
                   <div class="text-sm whitespace-nowrap font-medium text-gray-900"><%= booking.service_provider.full_name %></div>
@@ -150,6 +154,7 @@
                   </div>
                 </td>
               </tr>
+              
             <% end %>
           </tbody>
         </table>

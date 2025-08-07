@@ -1,0 +1,337 @@
+<div class="min-h-screen bg-gradient-to-br from-blue-50 via-white to-purple-50">
+  <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+    
+    <!-- Header -->
+    <div class="mb-8">
+      <div class="flex items-center mb-4">
+        <%= link_to client_dashboard_path, class: "text-blue-600 hover:text-blue-700 mr-4 flex items-center" do %>
+          <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path>
+          </svg>
+          Back to Dashboard
+        <% end %>
+      </div>
+      
+      <div class="bg-white rounded-xl shadow-lg p-6 border-l-4 <%= status_border_color(@booking.status) %>">
+        <div class="flex justify-between items-start">
+          <div>
+            <h1 class="text-3xl font-bold text-gray-900 mb-2"><%= @booking.service.name %></h1>
+            <p class="text-lg text-gray-600"><%= @booking.service.category.humanize %> › <%= @booking.service.subcategory.humanize %></p>
+          </div>
+          <div class="text-right">
+            <span class="px-4 py-2 rounded-full text-sm font-semibold <%= status_badge_color(@booking.status) %>">
+              <%= @booking.status.capitalize %>
+            </span>
+            <div class="text-2xl font-bold text-gray-900 mt-2">Rs. <%= number_with_delimiter(@booking.price.to_i) %></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Main Content Grid -->
+    <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+      
+      <!-- Left Column - Main Details -->
+      <div class="lg:col-span-2 space-y-6">
+        
+        <!-- Service Details Card -->
+        <div class="bg-white rounded-xl shadow-lg overflow-hidden">
+          <div class="bg-gradient-to-r from-blue-500 to-purple-600 px-6 py-4">
+            <h2 class="text-xl font-bold text-white flex items-center">
+              <svg class="w-6 h-6 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+              </svg>
+              Service Details
+            </h2>
+          </div>
+          <div class="p-6">
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <div>
+                <h3 class="text-sm font-medium text-gray-500 uppercase tracking-wide mb-2">Service Name</h3>
+                <p class="text-lg font-semibold text-gray-900"><%= @booking.service.name %></p>
+              </div>
+              <div>
+                <h3 class="text-sm font-medium text-gray-500 uppercase tracking-wide mb-2">Category</h3>
+                <p class="text-lg text-gray-900"><%= @booking.service.category.humanize %> › <%= @booking.service.subcategory.humanize %></p>
+              </div>
+              <% if @booking.service.description.present? %>
+                <div class="md:col-span-2">
+                  <h3 class="text-sm font-medium text-gray-500 uppercase tracking-wide mb-2">Service Description</h3>
+                  <p class="text-gray-700 leading-relaxed"><%= @booking.service.description %></p>
+                </div>
+              <% end %>
+            </div>
+          </div>
+        </div>
+
+        <!-- Booking Information Card -->
+        <div class="bg-white rounded-xl shadow-lg overflow-hidden">
+          <div class="bg-gradient-to-r from-green-500 to-teal-600 px-6 py-4">
+            <h2 class="text-xl font-bold text-white flex items-center">
+              <svg class="w-6 h-6 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3a1 1 0 011-1h6a1 1 0 011 1v4h3a1 1 0 011 1v8a1 1 0 01-1 1H7a1 1 0 01-1-1V8a1 1 0 011-1h1z"></path>
+              </svg>
+              Booking Information
+            </h2>
+          </div>
+          <div class="p-6">
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <div>
+                <h3 class="text-sm font-medium text-gray-500 uppercase tracking-wide mb-2">Date & Time</h3>
+                <div class="flex items-center text-lg font-semibold text-gray-900">
+                  <svg class="w-5 h-5 mr-2 text-blue-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3a1 1 0 011-1h6a1 1 0 011 1v4h3a1 1 0 011 1v8a1 1 0 01-1 1H7a1 1 0 01-1-1V8a1 1 0 011-1h1z"></path>
+                  </svg>
+                  <%= @booking.date.strftime('%A, %B %d, %Y') %>
+                </div>
+                <div class="flex items-center text-lg text-gray-600 mt-1">
+                  <svg class="w-5 h-5 mr-2 text-green-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                  </svg>
+                  <%= @booking.time %>
+                </div>
+              </div>
+              <div>
+                <h3 class="text-sm font-medium text-gray-500 uppercase tracking-wide mb-2">Booking ID</h3>
+                <p class="text-lg font-mono text-gray-900 bg-gray-100 px-3 py-1 rounded">#<%= @booking.id.to_s.rjust(6, '0') %></p>
+              </div>
+              <div class="md:col-span-2">
+                <h3 class="text-sm font-medium text-gray-500 uppercase tracking-wide mb-2">Service Address</h3>
+                <div class="flex items-start">
+                  <svg class="w-5 h-5 mr-2 text-red-500 mt-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"></path>
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"></path>
+                  </svg>
+                  <p class="text-lg text-gray-900"><%= @booking.address %></p>
+                </div>
+              </div>
+              <% if @booking.notes.present? %>
+                <div class="md:col-span-2">
+                  <h3 class="text-sm font-medium text-gray-500 uppercase tracking-wide mb-2">Special Notes</h3>
+                  <div class="bg-yellow-50 border-l-4 border-yellow-400 p-4 rounded">
+                    <p class="text-gray-700"><%= @booking.notes %></p>
+                  </div>
+                </div>
+              <% end %>
+            </div>
+          </div>
+        </div>
+
+        <!-- Timeline Card -->
+        <div class="bg-white rounded-xl shadow-lg overflow-hidden">
+          <div class="bg-gradient-to-r from-purple-500 to-pink-600 px-6 py-4">
+            <h2 class="text-xl font-bold text-white flex items-center">
+              <svg class="w-6 h-6 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+              </svg>
+              Booking Timeline
+            </h2>
+          </div>
+          <div class="p-6">
+            <div class="flow-root">
+              <ul class="-mb-8">
+                <li>
+                  <div class="relative pb-8">
+                    <span class="absolute top-4 left-4 -ml-px h-full w-0.5 bg-gray-200" aria-hidden="true"></span>
+                    <div class="relative flex space-x-3">
+                      <div>
+                        <span class="bg-blue-500 h-8 w-8 rounded-full flex items-center justify-center ring-8 ring-white">
+                          <svg class="w-4 h-4 text-white" fill="currentColor" viewBox="0 0 20 20">
+                            <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path>
+                          </svg>
+                        </span>
+                      </div>
+                      <div class="min-w-0 flex-1 pt-1.5 flex justify-between space-x-4">
+                        <div>
+                          <p class="text-sm text-gray-900 font-medium">Booking Created</p>
+                          <p class="text-sm text-gray-500">Your booking has been submitted</p>
+                        </div>
+                        <div class="text-right text-sm whitespace-nowrap text-gray-500">
+                          <%= time_ago_in_words(@booking.created_at) %> ago
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </li>
+                
+                <% if @booking.status != 'pending' %>
+                <li>
+                  <div class="relative pb-8">
+                    <span class="absolute top-4 left-4 -ml-px h-full w-0.5 bg-gray-200" aria-hidden="true"></span>
+                    <div class="relative flex space-x-3">
+                      <div>
+                        <span class="bg-green-500 h-8 w-8 rounded-full flex items-center justify-center ring-8 ring-white">
+                          <svg class="w-4 h-4 text-white" fill="currentColor" viewBox="0 0 20 20">
+                            <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path>
+                          </svg>
+                        </span>
+                      </div>
+                      <div class="min-w-0 flex-1 pt-1.5 flex justify-between space-x-4">
+                        <div>
+                          <p class="text-sm text-gray-900 font-medium">Status: <%= @booking.status.capitalize %></p>
+                          <p class="text-sm text-gray-500">Booking status updated</p>
+                        </div>
+                        <div class="text-right text-sm whitespace-nowrap text-gray-500">
+                          <%= time_ago_in_words(@booking.updated_at) %> ago
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </li>
+                <% end %>
+                
+                <% if @booking.status == 'completed' %>
+                <li>
+                  <div class="relative">
+                    <div class="relative flex space-x-3">
+                      <div>
+                        <span class="bg-purple-500 h-8 w-8 rounded-full flex items-center justify-center ring-8 ring-white">
+                          <svg class="w-4 h-4 text-white" fill="currentColor" viewBox="0 0 20 20">
+                            <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path>
+                          </svg>
+                        </span>
+                      </div>
+                      <div class="min-w-0 flex-1 pt-1.5 flex justify-between space-x-4">
+                        <div>
+                          <p class="text-sm text-gray-900 font-medium">Service Completed</p>
+                          <p class="text-sm text-gray-500">The service has been completed successfully</p>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </li>
+                <% end %>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Right Column - Provider & Actions -->
+      <div class="space-y-6">
+        
+        <!-- Service Provider Card -->
+        <div class="bg-white rounded-xl shadow-lg overflow-hidden">
+          <div class="bg-gradient-to-r from-indigo-500 to-blue-600 px-6 py-4">
+            <h2 class="text-xl font-bold text-white flex items-center">
+              <svg class="w-6 h-6 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path>
+              </svg>
+              Service Provider
+            </h2>
+          </div>
+          <div class="p-6">
+            <div class="text-center">
+              <div class="bg-indigo-100 rounded-full w-20 h-20 mx-auto flex items-center justify-center mb-4">
+                <svg class="w-10 h-10 text-indigo-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path>
+                </svg>
+              </div>
+              <h3 class="text-xl font-bold text-gray-900 mb-2"><%= @booking.service_provider.full_name %></h3>
+              <p class="text-gray-600 mb-4"><%= @booking.service_provider.email %></p>
+              
+              <div class="space-y-3">
+                <div class="bg-gray-50 rounded-lg p-3">
+                  <p class="text-sm text-gray-500 mb-1">Phone</p>
+                  <p class="font-medium text-gray-900"><%= @booking.service_provider.phone_number || 'Not provided' %></p>
+                </div>
+                <div class="bg-gray-50 rounded-lg p-3">
+                  <p class="text-sm text-gray-500 mb-1">Location</p>
+                  <p class="font-medium text-gray-900"><%= @booking.service.location %></p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Payment Status Card -->
+        <div class="bg-white rounded-xl shadow-lg overflow-hidden">
+          <div class="bg-gradient-to-r from-green-500 to-emerald-600 px-6 py-4">
+            <h2 class="text-xl font-bold text-white flex items-center">
+              <svg class="w-6 h-6 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1"></path>
+              </svg>
+              Payment Details
+            </h2>
+          </div>
+          <div class="p-6">
+            <div class="text-center">
+              <div class="text-3xl font-bold text-gray-900 mb-2">Rs. <%= number_with_delimiter(@booking.price.to_i) %></div>
+              
+              <% if @booking.paid? %>
+                <div class="bg-green-50 border border-green-200 rounded-lg p-4 mb-4">
+                  <div class="flex items-center justify-center">
+                    <svg class="w-6 h-6 text-green-500 mr-2" fill="currentColor" viewBox="0 0 20 20">
+                      <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path>
+                    </svg>
+                    <span class="text-green-600 font-semibold">Payment Completed</span>
+                  </div>
+                  <% if @booking.payment_provider %>
+                    <p class="text-green-600 text-sm mt-1">Paid via <%= @booking.payment_provider.capitalize %></p>
+                  <% end %>
+                </div>
+              <% elsif @booking.requires_payment? %>
+                <div class="bg-yellow-50 border border-yellow-200 rounded-lg p-4 mb-4">
+                  <p class="text-yellow-800 font-medium mb-3">Payment Required</p>
+                  <%= link_to "Pay Now - Rs. #{@booking.price}", 
+                      stripe_payment_path(booking_id: @booking.id),
+                      class: "bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 px-4 rounded-lg transition-colors inline-block" %>
+                </div>
+              <% else %>
+                <div class="bg-gray-50 border border-gray-200 rounded-lg p-4">
+                  <p class="text-gray-600">Payment will be available after service completion</p>
+                </div>
+              <% end %>
+            </div>
+          </div>
+        </div>
+
+        <!-- Actions Card -->
+        <div class="bg-white rounded-xl shadow-lg overflow-hidden">
+          <div class="bg-gradient-to-r from-orange-500 to-red-600 px-6 py-4">
+            <h2 class="text-xl font-bold text-white flex items-center">
+              <svg class="w-6 h-6 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6V4m0 2a2 2 0 100 4m0-4a2 2 0 110 4m-6 8a2 2 0 100-4m0 4a2 2 0 100-4m0 4v2m0-6V4"></path>
+              </svg>
+              Actions
+            </h2>
+          </div>
+          <div class="p-6 space-y-3">
+            <% if @booking.status == 'pending' %>
+              <%= link_to edit_booking_path(@booking), 
+                  class: "w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-3 px-4 rounded-lg transition-colors flex items-center justify-center" do %>
+                <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"></path>
+                </svg>
+                Edit Booking
+              <% end %>
+            <% end %>
+            
+            <% if ['pending', 'confirmed'].include?(@booking.status) %>
+              <%= link_to booking_path(@booking), 
+                  method: :delete,
+                  data: { 
+                    confirm: "Are you sure you want to cancel this booking?",
+                    turbo_method: :delete
+                  },
+                  class: "w-full bg-red-600 hover:bg-red-700 text-white font-semibold py-3 px-4 rounded-lg transition-colors flex items-center justify-center" do %>
+                <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                </svg>
+                Cancel Booking
+              <% end %>
+            <% end %>
+            
+            <%= link_to client_dashboard_path, 
+                class: "w-full bg-gray-600 hover:bg-gray-700 text-white font-semibold py-3 px-4 rounded-lg transition-colors flex items-center justify-center" do %>
+              <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"></path>
+              </svg>
+              Back to Dashboard
+            <% end %>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

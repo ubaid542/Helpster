@@ -32,20 +32,22 @@
 
         <div class="bg-white rounded-lg border border-gray-200 p-6 h-fit">
           <h3 class="text-lg font-semibold mb-4">Contact Provider</h3>
-          <div class="space-y-3 mb-8">
-            <div>
-              <span class="text-sm text-gray-600">Name</span>
-              <p class="font-medium"><%= @service.provider_full_name %></p>
+
+            <!-- Not logged in or not a client -->
+            <div class="space-y-3 mb-8">
+              <div class="bg-gray-50 border border-gray-200 rounded-lg p-4 mb-4">
+                <div class="flex items-center">
+                  <svg class="w-5 h-5 text-gray-600 mr-2" fill="currentColor" viewBox="0 0 20 20">
+                    <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clip-rule="evenodd"></path>
+                  </svg>
+                  <span class="text-gray-800 font-medium">Login to see contact details</span>
+                </div>
+                <p class="text-gray-700 text-sm mt-2">
+                  Contact details are available to logged-in clients 30 minutes before booking time.
+                </p>
+              </div>
             </div>
-            <div>
-              <span class="text-sm text-gray-600">Email</span>
-              <p class="font-medium"><%= @service.provider_email %></p>
-            </div>
-            <div>
-              <span class="text-sm text-gray-600">Phone</span>
-              <p class="font-medium"><%= @service.provider_phone_number %></p>
-            </div>
-          </div>
+          
 
           <%= link_to "Book Now", new_service_booking_path(service_id: @service.id), class: "bg-blue-600 text-white px-6 py-2 rounded-lg hover:bg-blue-700 transition" %>
 

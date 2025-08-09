@@ -30,5 +30,26 @@ def status_border_color(status)
     'border-gray-400'
   end
 end
+
+ # Helper method to check if contact details should be shown to client
+  def show_provider_contact_details?(service, current_user)
+    return false unless current_user.is_a?(Client)
+    
+    # Check if user has a booking for this service
+    booking = current_user.bookings.find_by(service: service)
+    return false unless booking
+    
+    booking.contact_details_visible_to_client?
+  end
+
+  # Helper method to get time until contact details are visible
+  def time_until_contact_visible(service, current_user)
+    return nil unless current_user.is_a?(Client)
+    
+    booking = current_user.bookings.find_by(service: service)
+    return nil unless booking
+    
+    booking.time_until_contact_details_visible
+  end
   
 end

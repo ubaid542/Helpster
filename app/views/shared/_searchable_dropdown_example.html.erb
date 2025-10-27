@@ -1,0 +1,185 @@
+<%# 
+  SEARCHABLE DROPDOWN EXAMPLES
+  This file demonstrates different ways to use the searchable dropdown component
+  Remove this file after reviewing the examples - it's just for demonstration
+%>
+
+<div class="container mx-auto p-8">
+  <h1 class="text-3xl font-bold mb-8">Searchable Dropdown Examples</h1>
+
+  <%= form_with url: "#", method: :post, local: true, class: "space-y-8" do |form| %>
+    
+    <%# Example 1: Basic Usage with Categories %>
+    <div class="bg-white p-6 rounded-lg shadow">
+      <h2 class="text-xl font-semibold mb-4">1. Basic Category Dropdown</h2>
+      <div class="w-full max-w-md">
+        <label class="block text-sm font-medium text-gray-700 mb-2">Select Category:</label>
+        
+        <%= render 'shared/searchable_dropdown',
+            form: form,
+            attribute: :category_id,
+            collection: Category.all, # Assumes you have a Category model
+            value_method: :id,
+            text_method: :name,
+            prompt: "Choose a category",
+            placeholder: "Search categories...",
+            empty_message: "No categories found" %>
+      </div>
+    </div>
+
+    <%# Example 2: User Selection with Custom Styling %>
+    <div class="bg-white p-6 rounded-lg shadow">
+      <h2 class="text-xl font-semibold mb-4">2. User Selection with Custom Class</h2>
+      <div class="w-full max-w-md">
+        <label class="block text-sm font-medium text-gray-700 mb-2">Assign User:</label>
+        
+        <%= render 'shared/searchable_dropdown',
+            form: form,
+            attribute: :user_id,
+            collection: User.all, # Assumes you have a User model
+            value_method: :id,
+            text_method: :email, # or :name, :full_name, etc.
+            prompt: "Select a user",
+            placeholder: "Type to search users...",
+            empty_message: "No users match your search",
+            html_options: { class: "user-selector" } %>
+      </div>
+    </div>
+
+    <%# Example 3: Static Options (without ActiveRecord) %>
+    <div class="bg-white p-6 rounded-lg shadow">
+      <h2 class="text-xl font-semibold mb-4">3. Static Options (Priorities)</h2>
+      <div class="w-full max-w-md">
+        <label class="block text-sm font-medium text-gray-700 mb-2">Priority Level:</label>
+        
+        <%
+          priority_options = [
+            OpenStruct.new(id: 'low', name: 'Low Priority'),
+            OpenStruct.new(id: 'medium', name: 'Medium Priority'),
+            OpenStruct.new(id: 'high', name: 'High Priority'),
+            OpenStruct.new(id: 'urgent', name: 'Urgent Priority')
+          ]
+        %>
+        
+        <%= render 'shared/searchable_dropdown',
+            form: form,
+            attribute: :priority,
+            collection: priority_options,
+            value_method: :id,
+            text_method: :name,
+            prompt: "Select priority",
+            placeholder: "Search priority levels...",
+            empty_message: "No matching priorities" %>
+      </div>
+    </div>
+
+    <%# Example 4: Countries Dropdown (Large Dataset) %>
+    <div class="bg-white p-6 rounded-lg shadow">
+      <h2 class="text-xl font-semibold mb-4">4. Large Dataset Example (Countries)</h2>
+      <div class="w-full max-w-md">
+        <label class="block text-sm font-medium text-gray-700 mb-2">Country:</label>
+        
+        <%
+          countries = [
+            OpenStruct.new(code: 'US', name: 'United States'),
+            OpenStruct.new(code: 'CA', name: 'Canada'),
+            OpenStruct.new(code: 'GB', name: 'United Kingdom'),
+            OpenStruct.new(code: 'DE', name: 'Germany'),
+            OpenStruct.new(code: 'FR', name: 'France'),
+            OpenStruct.new(code: 'IT', name: 'Italy'),
+            OpenStruct.new(code: 'ES', name: 'Spain'),
+            OpenStruct.new(code: 'AU', name: 'Australia'),
+            OpenStruct.new(code: 'JP', name: 'Japan'),
+            OpenStruct.new(code: 'IN', name: 'India'),
+            OpenStruct.new(code: 'BR', name: 'Brazil'),
+            OpenStruct.new(code: 'MX', name: 'Mexico'),
+            OpenStruct.new(code: 'ZA', name: 'South Africa'),
+            OpenStruct.new(code: 'EG', name: 'Egypt'),
+            OpenStruct.new(code: 'NG', name: 'Nigeria')
+            # Add more countries as needed
+          ]
+        %>
+        
+        <%= render 'shared/searchable_dropdown',
+            form: form,
+            attribute: :country_code,
+            collection: countries,
+            value_method: :code,
+            text_method: :name,
+            prompt: "Select country",
+            placeholder: "Type country name...",
+            empty_message: "No countries found",
+            html_options: { class: "country-selector" } %>
+      </div>
+    </div>
+
+    <%# Example 5: Direct HTML Usage (without partial) %>
+    <div class="bg-white p-6 rounded-lg shadow">
+      <h2 class="text-xl font-semibold mb-4">5. Direct HTML Usage (Manual)</h2>
+      <div class="w-full max-w-md">
+        <label class="block text-sm font-medium text-gray-700 mb-2">Manual Implementation:</label>
+        
+        <div data-controller="searchable-dropdown" 
+             data-searchable-dropdown-placeholder-value="Search services..." 
+             data-searchable-dropdown-empty-message-value="No services available"
+             data-action="focus->searchable-dropdown#inputFocus input->searchable-dropdown#inputInput keydown->searchable-dropdown#inputKeydown">
+          
+          <%= form.select :service_id, 
+                          options_for_select([
+                            ['Web Development', 'web_dev'],
+                            ['Mobile Development', 'mobile_dev'],
+                            ['UI/UX Design', 'design'],
+                            ['SEO Optimization', 'seo'],
+                            ['Digital Marketing', 'marketing'],
+                            ['Content Writing', 'content'],
+                            ['Data Analytics', 'analytics']
+                          ]), 
+                          { prompt: "Select a service" },
+                          { 
+                            "data-searchable-dropdown-target": "select",
+                            "data-action": "click->searchable-dropdown#optionClick mouseenter->searchable-dropdown#optionMouseenter"
+                          } %>
+        </div>
+      </div>
+    </div>
+
+    <%# Submit button for testing %>
+    <div class="pt-4">
+      <%= form.submit "Test Form Submission", class: "bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded" %>
+    </div>
+
+  <% end %>
+
+  <%# Instructions %>
+  <div class="mt-12 bg-gray-50 p-6 rounded-lg">
+    <h2 class="text-xl font-semibold mb-4">Usage Instructions</h2>
+    
+    <h3 class="text-lg font-medium mb-2">Using the Partial:</h3>
+    <pre class="bg-gray-800 text-green-400 p-4 rounded text-sm overflow-x-auto"><code>&lt;%= render 'shared/searchable_dropdown',
+    form: form,                    # Required: Rails form object
+    attribute: :category_id,       # Required: The form attribute name
+    collection: @categories,       # Required: Array/ActiveRecord collection
+    value_method: :id,            # Optional: Method for option values (default: :id)
+    text_method: :name,           # Optional: Method for option text (default: :name)
+    prompt: "Select option",      # Optional: Default prompt text
+    placeholder: "Search...",     # Optional: Search input placeholder
+    empty_message: "No results", # Optional: Message when no results
+    html_options: { class: "..." } # Optional: Additional HTML attributes
+%&gt;</code></pre>
+
+    <h3 class="text-lg font-medium mb-2 mt-6">Features:</h3>
+    <ul class="list-disc list-inside space-y-1 text-gray-700">
+      <li>Type to search and filter options in real-time</li>
+      <li>Keyboard navigation with arrow keys</li>
+      <li>Enter to select, Escape to close</li>
+      <li>Click outside to close dropdown</li>
+      <li>Responsive design for mobile devices</li>
+      <li>Accessible with proper ARIA attributes</li>
+      <li>Works with Rails form helpers and validations</li>
+      <li>Supports both ActiveRecord collections and static arrays</li>
+    </ul>
+
+    <h3 class="text-lg font-medium mb-2 mt-6">Browser Support:</h3>
+    <p class="text-gray-700">Modern browsers including Chrome, Firefox, Safari, and Edge. IE11+ with polyfills.</p>
+  </div>
+</div>
